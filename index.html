@@ -177,7 +177,7 @@ tbody tr:last-child td{border-bottom:none;}
 /* ── TABS ── */
 .tab-panel{display:flex;flex-direction:column;gap:20px;}
 .tab-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;}
-.tab-title{font-size:1.4rem;font-weight:800;color:var(--text);transition:color .2s;}
+.tab-title{font-size:1.4rem;font-weight:800;color:var(--text);}
 .tab-sub{font-size:.82rem;color:var(--muted);margin-top:4px;}
 /* ── AUTH SCREEN ── */
 #authScreen{background:var(--bg);}
@@ -193,25 +193,6 @@ tbody tr:last-child td{border-bottom:none;}
 </style>
 </head>
 <body>
-
-
-<!-- Nickname Onboarding Modal -->
-<div class="modal-bg" id="nicknameModal">
-  <div class="modal" style="max-width:380px;text-align:center;align-items:center;">
-    <svg width="48" height="48" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:4px">
-      <rect width="32" height="32" rx="10" fill="rgba(34,199,122,0.12)"/>
-      <polyline points="5,23 11,15 16,18 22,10 27,10" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="27" cy="10" r="2" fill="#22c77a"/>
-      <line x1="5" y1="26" x2="27" y2="26" stroke="#22c77a" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
-    </svg>
-    <h3 style="font-size:1.2rem;">Welcome to Budget Tracker!</h3>
-    <p style="font-size:.85rem;color:var(--muted);margin-top:-6px;line-height:1.6;">Let's personalize your experience.<br/>What should we call you?</p>
-    <div style="width:100%">
-      <input id="nicknameInp" class="inp" type="text" placeholder="Your first name or nickname" maxlength="30" style="text-align:center;font-size:1rem;" onkeydown="if(event.key==='Enter')saveNickname()"/>
-    </div>
-    <button class="gbtn" style="margin-top:0;max-width:220px" onclick="saveNickname()">Let's go →</button>
-  </div>
-</div>
 
 <!-- Edit Transaction Modal -->
 <div class="modal-bg" id="editModal">
@@ -233,10 +214,12 @@ tbody tr:last-child td{border-bottom:none;}
   <div class="auth-card">
     <div class="auth-logo" style="display:flex;align-items:center;justify-content:center;gap:10px;">
       <svg width="36" height="36" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="32" height="32" rx="10" fill="rgba(34,199,122,0.12)"/>
-        <polyline points="5,23 11,15 16,18 22,10 27,10" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="27" cy="10" r="2" fill="#22c77a"/>
-        <line x1="5" y1="26" x2="27" y2="26" stroke="#22c77a" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+        <rect width="32" height="32" rx="10" fill="rgba(34,199,122,0.15)"/>
+        <rect x="6" y="10" width="20" height="14" rx="3" stroke="#22c77a" stroke-width="1.7"/>
+        <path d="M6 14h20" stroke="#22c77a" stroke-width="1.7" stroke-linecap="round"/>
+        <circle cx="11" cy="18.5" r="1.2" fill="#22c77a"/>
+        <path d="M15 18.5h6" stroke="#22c77a" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M11 10V8a2 2 0 012-2h6a2 2 0 012 2v2" stroke="#22c77a" stroke-width="1.7" stroke-linecap="round"/>
       </svg>
       Budget Tracker
     </div>
@@ -252,10 +235,12 @@ tbody tr:last-child td{border-bottom:none;}
   <aside class="side">
     <div class="side-logo">
       <svg width="30" height="30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="32" height="32" rx="10" fill="rgba(34,199,122,0.12)"/>
-        <polyline points="5,23 11,15 16,18 22,10 27,10" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="27" cy="10" r="2" fill="#22c77a"/>
-        <line x1="5" y1="26" x2="27" y2="26" stroke="#22c77a" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+        <rect width="32" height="32" rx="10" fill="rgba(34,199,122,0.15)"/>
+        <rect x="6" y="10" width="20" height="14" rx="3" stroke="#22c77a" stroke-width="1.7"/>
+        <path d="M6 14h20" stroke="#22c77a" stroke-width="1.7" stroke-linecap="round"/>
+        <circle cx="11" cy="18.5" r="1.2" fill="#22c77a"/>
+        <path d="M15 18.5h6" stroke="#22c77a" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M11 10V8a2 2 0 012-2h6a2 2 0 012 2v2" stroke="#22c77a" stroke-width="1.7" stroke-linecap="round"/>
       </svg>
       <h1>Budget Tracker</h1>
     </div>
@@ -295,10 +280,48 @@ tbody tr:last-child td{border-bottom:none;}
     <div id="tab-dashboard" class="tab-panel">
       <div class="tab-header">
         <div>
-          <h2 class="tab-title" id="dashWelcome">Dashboard</h2>
+          <h2 class="tab-title">Dashboard</h2>
           <p class="tab-sub" id="dashMonthLabel"></p>
         </div>
       </div>
+
+      <!-- Intro Banner -->
+      <div style="background:rgba(34,199,122,0.07);border:1px solid rgba(34,199,122,0.2);border-radius:16px;padding:20px 24px;margin-bottom:4px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span style="font-size:.85rem;font-weight:700;color:#22c77a;letter-spacing:.04em;text-transform:uppercase;">How This Budget Works</span>
+        </div>
+        <p style="font-size:.84rem;color:#c8d0e0;line-height:1.7;margin:0 0 12px;">
+          This app uses a <strong style="color:#e8edf5;">percentage-based budgeting method</strong> — your monthly income is divided into four buckets so every dollar has a purpose. Here's the default breakdown:
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px;">
+          <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 14px;">
+            <div style="font-size:1.3rem;font-weight:800;color:#22c77a;">50%</div>
+            <div style="font-size:.82rem;font-weight:700;color:#e8edf5;margin:2px 0;">Essentials</div>
+            <div style="font-size:.76rem;color:#6b7a99;">Rent, groceries, utilities, transport — the non-negotiables.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 14px;">
+            <div style="font-size:1.3rem;font-weight:800;color:#3b82f6;">15%</div>
+            <div style="font-size:.82rem;font-weight:700;color:#e8edf5;margin:2px 0;">Growth</div>
+            <div style="font-size:.76rem;color:#6b7a99;">Investing, retirement contributions, building long-term wealth.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 14px;">
+            <div style="font-size:1.3rem;font-weight:800;color:#8b5cf6;">25%</div>
+            <div style="font-size:.82rem;font-weight:700;color:#e8edf5;margin:2px 0;">Lifestyle</div>
+            <div style="font-size:.76rem;color:#6b7a99;">Dining, subscriptions, hobbies, entertainment — your "fun" money.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 14px;">
+            <div style="font-size:1.3rem;font-weight:800;color:#f59e0b;">10%</div>
+            <div style="font-size:.82rem;font-weight:700;color:#e8edf5;margin:2px 0;">Savings</div>
+            <div style="font-size:.76rem;color:#6b7a99;">Emergency fund, short-term goals, rainy day reserves.</div>
+          </div>
+        </div>
+        <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:10px 14px;">
+          <span style="font-size:.78rem;color:#f59e0b;font-weight:600;">💡 Paying off debt?</span>
+          <span style="font-size:.78rem;color:#8a96b0;"> Redirect the <strong style="color:#c8d0e0;">Growth (15%)</strong> bucket toward your debt payments instead of investing. Once your debt is cleared, shift it back to building wealth. The percentages are a starting point — adjust them in the <strong style="color:#c8d0e0;">Income &amp; Budget</strong> tab to fit your situation.</span>
+        </div>
+      </div>
+
       <div class="stat-row" id="statRow"></div>
       <div class="grid" id="catGrid"></div>
     </div>
@@ -715,7 +738,7 @@ function render(){
   $id("unallocBox").innerHTML=uBox;
 
   // CATEGORY GRID
-  var gr="";
+  var gr=""; var gr_full="";
   for(var c=0;c<d.bd.length;c++){
     var cat=d.bd[c],subTotal=0,sp=0;
     for(var s=0;s<cat.subs.length;s++){subTotal+=cat.subs[s].budget;sp+=cat.subs[s].spent;}
@@ -727,6 +750,7 @@ function render(){
     var poolPct=pool>0?Math.min(100,Math.round((subTotal/pool)*100)):0;
     var poolOver=pool>0&&subTotal>pool;
 
+    // Editable subcards (Categories tab)
     var sc="";
     for(var s=0;s<cat.subs.length;s++){
       var sub=cat.subs[s];
@@ -736,22 +760,49 @@ function render(){
       sc+='<div class="scard">'+
         '<div class="scard-head">'+
           '<input class="name-inp" type="text" value="'+sub.name.replace(/"/g,'&quot;')+'" onchange="setSubName('+c+','+s+',this.value)" title="Rename"/>'+
-          '<span class="spct-badge">'+subOfCat+'% cat · '+subOfInc+'% inc</span>'+
-          '<button class="xbtn" style="padding:4px 8px;font-size:.75rem" onclick="deleteSub('+c+','+s+')" title="Delete subcategory">✕</button>'+
+          '<span class="spct-badge">'+subOfCat+'% cat \u00b7 '+subOfInc+'% inc</span>'+
+          '<button class="xbtn" style="padding:4px 8px;font-size:.75rem" onclick="deleteSub('+c+','+s+')" title="Delete subcategory">\u2715</button>'+
         '</div>'+
         '<input class="budget-inp" type="number" min="0" step="0.01" value="'+sub.budget.toFixed(2)+'" onchange="setBudget('+c+','+s+',this.value)"/>'+
         '<div class="row"><span>Spent</span><strong>'+money(sub.spent)+'</strong></div>'+
         '<div class="row"><span>Left</span><strong class="'+(sl>=0?'good':'bad')+'">'+money(sl)+'</strong></div>'+
       '</div>';
     }
-
-    // Add subcategory row
     sc+='<div class="add-sub-row">'+
       '<input class="add-sub-inp" id="newSubName-'+c+'" type="text" placeholder="New subcategory name..." onkeydown="if(event.key===\'Enter\')addSub('+c+')"/>'+
       '<button class="gbtn sm" onclick="addSub('+c+')">+ Add</button>'+
     '</div>';
 
+    // Read-only subcards (Dashboard tab)
+    var sc_ro="";
+    for(var s=0;s<cat.subs.length;s++){
+      var sub=cat.subs[s];
+      var sl=Math.round((sub.budget-sub.spent)*100)/100;
+      var subOfCat=subTotal>0?Math.round((sub.budget/subTotal)*100):0;
+      var subOfInc=income>0?Math.round((sub.budget/income)*100):0;
+      sc_ro+='<div class="scard">'+
+        '<div class="scard-head">'+
+          '<span style="flex:1;font-size:.82rem;font-weight:600;color:var(--text);">'+sub.name+'</span>'+
+          '<span class="spct-badge">'+subOfCat+'% cat \u00b7 '+subOfInc+'% inc</span>'+
+        '</div>'+
+        '<div class="row" style="margin-bottom:2px;"><span>Budget</span><strong>'+money(sub.budget)+'</strong></div>'+
+        '<div class="row"><span>Spent</span><strong>'+money(sub.spent)+'</strong></div>'+
+        '<div class="row"><span>Left</span><strong class="'+(sl>=0?'good':'bad')+'">'+money(sl)+'</strong></div>'+
+      '</div>';
+    }
+
+    // Dashboard card (read-only)
     gr+='<div class="ccard">'+
+      '<div class="chead"><h3>'+cat.name+'</h3><span class="badge">'+livePct+'%</span></div>'+
+      (pool>0?'<div class="cat-target-row"><span class="cat-target-label">Pool ('+Math.round(cat.pct*100)+'%): '+money(pool)+'</span><span class="cat-target-amt '+(poolOver?'over':'ok')+'">'+money(poolLeft)+' left</span></div><div class="prog-wrap"><div class="prog-bar'+(poolOver?' over':'')+'" style="width:'+poolPct+'%"></div></div>':'')+
+      '<div class="row"><span>Assigned</span><strong>'+money(subTotal)+'</strong></div>'+
+      '<div class="row"><span>Spent</span><strong>'+money(sp)+'</strong></div>'+
+      '<div class="row"><span>Remaining</span><strong class="'+(remaining>=0?'good':'bad')+'">'+money(remaining)+'</strong></div>'+
+      sc_ro+
+    '</div>';
+
+    // Categories card (editable)
+    gr_full+='<div class="ccard">'+
       '<div class="chead"><h3>'+cat.name+'</h3><span class="badge">'+livePct+'%</span></div>'+
       (pool>0?'<div class="cat-target-row"><span class="cat-target-label">Pool ('+Math.round(cat.pct*100)+'%): '+money(pool)+'</span><span class="cat-target-amt '+(poolOver?'over':'ok')+'">'+money(poolLeft)+' left</span></div><div class="prog-wrap"><div class="prog-bar'+(poolOver?' over':'')+'" style="width:'+poolPct+'%"></div></div>':'')+
       '<div class="row"><span>Assigned</span><strong>'+money(subTotal)+'</strong></div>'+
@@ -761,7 +812,7 @@ function render(){
     '</div>';
   }
   $id("catGrid").innerHTML=gr;
-  var cgf=document.getElementById('catGridFull'); if(cgf) cgf.innerHTML=gr;
+  var cgf=document.getElementById('catGridFull'); if(cgf) cgf.innerHTML=gr_full;
   renderStatCards();
 
   // TRANSACTIONS
@@ -773,8 +824,8 @@ function render(){
       '<td>'+tx.name+'</td><td>'+tx.cat+'</td><td>'+tx.sub+'</td>'+
       '<td>'+tx.date+'</td><td>'+money(tx.amt)+'</td>'+
       '<td><div class="action-btns">'+
-        '<button class="ebtn" onclick="openEdit(\''+tx.id+'\')">✎</button>'+
-        '<button class="xbtn" onclick="deleteTx(\''+tx.id+'\')">✕</button>'+
+        '<button class="ebtn" onclick="openEdit(\''+tx.id+'\')">&#9998;</button>'+
+        '<button class="xbtn" onclick="deleteTx(\''+tx.id+'\')">\u2715</button>'+
       '</div></td>'+
     '</tr>';
   }
@@ -815,43 +866,9 @@ function renderStatCards(){
     '<div class="stat-card"><div class="stat-label">Monthly Income</div><div class="stat-val green">'+money(income)+'</div><div class="stat-sub">Net take-home</div></div>'+
     '<div class="stat-card"><div class="stat-label">Total Budgeted</div><div class="stat-val">'+money(assigned)+'</div><div class="stat-sub">Across all categories</div></div>'+
     '<div class="stat-card"><div class="stat-label">Total Spent</div><div class="stat-val '+(totalSpent>assigned?'red':'warn')+'">'+money(totalSpent)+'</div><div class="stat-sub">This month</div></div>'+
-    '<div class="stat-card"><div class="stat-label">Remaining</div><div class="stat-val '+(remaining>=0?'green':'red')+'">'+money(remaining)+'</div><div class="stat-sub">Budget left</div></div>';
+    '<div class="stat-card"><div class="stat-label">Remaining</div><div class="stat-val '+(unalloc>=0?'green':'red')+'">'+money(unalloc)+'</div><div class="stat-sub">Income − Budgeted</div></div>';
   var sr = document.getElementById('statRow');
   if(sr) sr.innerHTML = html2;
-}
-
-
-// ── NICKNAME ────────────────────────────────────────────────────────────────
-async function loadNickname(){
-  var { data: { user } } = await sb.auth.getUser();
-  if(!user) return null;
-  return (user.user_metadata && user.user_metadata.nickname) ? user.user_metadata.nickname : null;
-}
-
-async function saveNickname(){
-  var val = document.getElementById('nicknameInp').value.trim();
-  if(!val){ document.getElementById('nicknameInp').focus(); return; }
-  await sb.auth.updateUser({ data: { nickname: val } });
-  document.getElementById('nicknameModal').classList.remove('open');
-  updateWelcomeBanner(val, true);
-}
-
-function updateWelcomeBanner(name, isNew){
-  var el = document.getElementById('dashWelcome');
-  if(el && name){
-    el.textContent = (isNew ? 'Welcome, ' : 'Welcome back, ') + name + ' 👋';
-  }
-}
-
-async function checkNickname(isNewUser){
-  var nick = await loadNickname();
-  if(!nick){
-    // First time — show onboarding modal
-    document.getElementById('nicknameModal').classList.add('open');
-    setTimeout(function(){ document.getElementById('nicknameInp').focus(); }, 200);
-  } else {
-    updateWelcomeBanner(nick, false);
-  }
 }
 
 // ── AUTH ──────────────────────────────────────────────────────────────────
