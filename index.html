@@ -131,7 +131,15 @@ tbody tr:last-child td{border-bottom:none;}
   </div>
 </div>
 
-<div class="shell">
+<div id="authScreen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:12px;background:var(--bg);">
+  <h2 style="font-size:1.4rem;">💰 Budget Tracker</h2>
+  <input id="authEmail" class="inp" type="email" placeholder="Email" style="max-width:300px;width:100%;"/>
+  <input id="authPass" class="inp" type="password" placeholder="Password" style="max-width:300px;width:100%;"/>
+  <button class="gbtn" style="max-width:300px;width:100%" onclick="doLogin()">Log In</button>
+  <button class="gbtn ghost" style="max-width:300px;width:100%" onclick="doSignup()">Create Account</button>
+  <p id="authMsg" style="color:#f87171;font-size:.85rem;text-align:center;max-width:300px;"></p>
+</div>
+<div class="shell" style="display:none;">
   <aside class="side">
     <div>
       <h1>💰 Budget Tracker</h1>
@@ -189,7 +197,15 @@ tbody tr:last-child td{border-bottom:none;}
   </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const { createClient } = supabase;
+const sb = createClient(
+  'https://mmlwddyksjsxzsuohhwc.supabase.co',   // 👈 Replace with your Supabase Project URL
+  'sb_publishable_jf1ycwxyiHLHDyNGi6OTMQ_aNHZAw6L'       // 👈 Replace with your anon/public key
+);
+let currentUser = null;
+
 // ── MONTHS LIST ────────────────────────────────────────────────────────────
 var MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
@@ -248,17 +264,27 @@ function ensureMonth(key, copyBudgetsFrom){
 
 function activeData(){ return STATE.months[STATE.activeMonth]; }
 
-function saveState(){
-  try{ localStorage.setItem("budgetTrackerState", JSON.stringify(STATE)); } catch(e){}
+async function saveState(){
+  if(!currentUser) return;
+  await sb.from('user_states').upsert({
+    user_id: currentUser.id,
+    state: STATE,
+    updated_at: new Date()
+  }, { onConflict: 'user_id' });
 }
 
-function loadState(){
-  try{
-    var raw = localStorage.getItem("budgetTrackerState");
-    if(raw){ STATE = JSON.parse(raw); return; }
-  } catch(e){}
-  STATE = initState();
-  ensureMonth(STATE.activeMonth, null);
+async function loadState(){
+  if(!currentUser) return;
+  const { data } = await sb.from('user_states')
+    .select('state')
+    .eq('user_id', currentUser.id)
+    .single();
+  if(data){
+    STATE = data.state;
+  } else {
+    STATE = initState();
+    ensureMonth(STATE.activeMonth, null);
+  }
 }
 
 // ── HELPERS ────────────────────────────────────────────────────────────────
@@ -474,10 +500,10 @@ function saveEdit(){
 }
 
 // ── RENDER ────────────────────────────────────────────────────────────────
-function saveAndRender(){
+async function saveAndRender(){
   var d=activeData();
   d.income=getIncome();
-  saveState();
+  await saveState();
   render();
 }
 
@@ -587,11 +613,43 @@ function render(){
   $id("txBody").innerHTML=rows;
 }
 
+// ── AUTH ──────────────────────────────────────────────────────────────────
+async function doLogin(){
+  var {error} = await sb.auth.signInWithPassword({
+    email: document.getElementById('authEmail').value,
+    password: document.getElementById('authPass').value
+  });
+  if(error){ document.getElementById('authMsg').textContent = error.message; }
+}
+
+async function doSignup(){
+  var {error} = await sb.auth.signUp({
+    email: document.getElementById('authEmail').value,
+    password: document.getElementById('authPass').value
+  });
+  if(error){ document.getElementById('authMsg').textContent = error.message; }
+  else { document.getElementById('authMsg').textContent = 'Check your email to confirm your account!'; }
+}
+
+async function doLogout(){
+  await sb.auth.signOut();
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────
-loadState();
-ensureMonth(STATE.activeMonth, null);
-loadMonthIntoUI();
-render();
+sb.auth.onAuthStateChange(async (event, session) => {
+  currentUser = session?.user ?? null;
+  if(currentUser){
+    document.getElementById('authScreen').style.display = 'none';
+    document.querySelector('.shell').style.display = 'grid';
+    await loadState();
+    ensureMonth(STATE.activeMonth, null);
+    loadMonthIntoUI();
+    render();
+  } else {
+    document.getElementById('authScreen').style.display = 'flex';
+    document.querySelector('.shell').style.display = 'none';
+  }
+});
 </script>
 </body>
 </html>
