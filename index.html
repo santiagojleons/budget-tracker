@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+  <link rel="manifest" href="/budget-tracker/manifest.json"/>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
   <meta http-equiv="Pragma" content="no-cache"/>
   <meta http-equiv="Expires" content="0"/>
@@ -216,9 +217,11 @@ tbody tr:last-child td{border-bottom:none;}
       await OneSignal.init({
         appId: "223ff920-9087-4e5d-85f2-c61525f6e0a8",
         safari_web_id: "web.onesignal.auto.37bbdda8-1be5-416a-8d2a-3d51b0669a43",
-        notifyButton: { enable: false }, // We use our own button
+        serviceWorkerPath: "/budget-tracker/OneSignalSDKWorker.js",
+        serviceWorkerParam: { scope: "/budget-tracker/" },
+        notifyButton: { enable: false },
         promptOptions: {
-          slidedown: { prompts: [] } // No auto-prompt, user taps our button
+          slidedown: { prompts: [] }
         }
       });
     });
