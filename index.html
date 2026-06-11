@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Budget Tracker</title>
 <style>
@@ -28,6 +31,10 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Inter',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+#appLoader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
+#appLoader .spin{width:36px;height:36px;border:3px solid rgba(34,199,122,0.2);border-top-color:#22c77a;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+#appLoader p{color:var(--muted);font-size:.85rem;}
 
 /* ── LAYOUT ── */
 .shell{display:grid;grid-template-columns:280px 1fr;min-height:100vh;}
@@ -213,6 +220,7 @@ tbody tr:last-child td{border-bottom:none;}
   </div>
 </div>
 
+<div id="appLoader"><div class="spin"></div><p>Loading...</p></div>
 <div id="authScreen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;">
   <div class="auth-card">
     <div class="auth-logo" style="display:flex;align-items:center;justify-content:center;gap:10px;">
@@ -227,9 +235,20 @@ tbody tr:last-child td{border-bottom:none;}
       Budget Tracker
     </div>
     <p class="auth-sub">Track your money. Reach your goals.</p>
-    <div><label style="display:block;font-size:.78rem;color:var(--muted);margin-bottom:5px;">Email</label><input id="authEmail" class="inp" type="email" placeholder="you@email.com"/></div>
-    <div><label style="display:block;font-size:.78rem;color:var(--muted);margin-bottom:5px;">Password</label><input id="authPass" class="inp" type="password" placeholder="••••••••"/></div>
-    <button class="gbtn" style="margin-top:4px" onclick="doLogin()">Log In</button>
+    <form id="loginForm" onsubmit="doLogin(); return false;" autocomplete="on">
+    <div><label style="display:block;font-size:.78rem;color:var(--muted);margin-bottom:5px;">Email</label><input id="authEmail" class="inp" type="email" placeholder="you@email.com" autocomplete="username" name="username"/></div>
+    <div><label style="display:block;font-size:.78rem;color:var(--muted);margin-bottom:5px;">Password</label><input id="authPass" class="inp" type="password" placeholder="••••••••" autocomplete="current-password" name="password"/></div>
+    <button type="submit" class="gbtn" style="margin-top:4px;width:100%;">Log In</button>
+    </form>
+    <div style="display:flex;align-items:center;gap:8px;margin:10px 0;">
+      <div style="flex:1;height:1px;background:var(--border2);"></div>
+      <span style="font-size:.72rem;color:var(--muted);">or</span>
+      <div style="flex:1;height:1px;background:var(--border2);"></div>
+    </div>
+    <button id="passkeyBtn" class="gbtn" style="width:100%;background:rgba(34,199,122,0.08);border:1px solid rgba(34,199,122,0.35);display:flex;align-items:center;justify-content:center;gap:8px;" onclick="signInWithPasskey()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M12 12v8"/><path d="M8 16h8"/><rect x="3" y="11" width="4" height="6" rx="1"/><rect x="17" y="11" width="4" height="6" rx="1"/></svg>
+      <span>Sign in with Face ID / Touch ID</span>
+    </button>
     <button class="gbtn ghost" style="margin-top:6px" onclick="doSignup()">Create Account</button>
     <div id="signupNameRow" style="display:none;margin-top:2px;">
       <label style="display:block;font-size:.78rem;color:var(--muted);margin-bottom:5px;">Your First Name</label>
@@ -278,6 +297,10 @@ tbody tr:last-child td{border-bottom:none;}
     </div>
 
     <div class="side-divider" style="margin-top:auto"></div>
+    <button id="registerPasskeyBtn" class="side-item" onclick="registerPasskey()" style="font-size:.75rem;color:#22c77a;border:1px solid rgba(34,199,122,0.25);border-radius:8px;margin-bottom:4px;padding:8px 10px;background:rgba(34,199,122,0.06);">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M12 12v4"/><path d="M9 18h6"/></svg>
+      ＋ Register Face ID / Touch ID
+    </button>
     <button class="side-item" onclick="doLogout()" style="margin-top:8px">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Log Out
     </button>
@@ -472,11 +495,19 @@ tbody tr:last-child td{border-bottom:none;}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  localStorage.clear();
 const { createClient } = supabase;
 const sb = createClient(
-  'https://mmlwddyksjsxzsuohhwc.supabase.co',   // 👈 Replace with your Supabase Project URL
-  'sb_publishable_jf1ycwxyiHLHDyNGi6OTMQ_aNHZAw6L'       // 👈 Replace with your anon/public key
+  'https://mmlwddyksjsxzsuohhwc.supabase.co',
+  'sb_publishable_jf1ycwxyiHLHDyNGi6OTMQ_aNHZAw6L',
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      storageKey: 'budgetapp-session',
+      storage: window.localStorage,
+      experimental: { passkey: true }
+    }
+  }
 );
 let currentUser = null;
 let authInProgress = false;
@@ -538,13 +569,19 @@ async function saveState(){
 
 async function loadState(){
   if(!currentUser) return;
-  const { data } = await sb.from('user_states')
-    .select('state')
-    .eq('user_id', currentUser.id)
-    .single();
-  if(data){
-    STATE = data.state;
-  } else {
+  try {
+    const { data, error } = await sb.from('user_states')
+      .select('state')
+      .eq('user_id', currentUser.id)
+      .single();
+    if(data && data.state){
+      STATE = data.state;
+    } else {
+      STATE = initState();
+      ensureMonth(STATE.activeMonth, null);
+    }
+  } catch(e) {
+    console.error('loadState error:', e);
     STATE = initState();
     ensureMonth(STATE.activeMonth, null);
   }
@@ -1047,8 +1084,9 @@ function render(){
     var cat=d.bd[c],subTotal=0,sp=0;
     for(var s=0;s<cat.subs.length;s++){subTotal+=cat.subs[s].budget;sp+=cat.subs[s].spent;}
     subTotal=Math.round(subTotal*100)/100; sp=Math.round(sp*100)/100;
-    // Use pool as assigned amount if no sub budgets set yet
-    var dispAssigned = subTotal>0 ? subTotal : (cat.pool||0);
+    // Always use pool as the category's assigned budget
+    var dispAssigned = cat.pool||0;
+    var unsubbed = Math.round((dispAssigned-subTotal)*100)/100; // pool not yet split into subs
     var remaining=Math.round((dispAssigned-sp)*100)/100;
     var livePct=income>0?Math.round((subTotal/income)*100):0;
     var pool=cat.pool;
@@ -1107,7 +1145,7 @@ function render(){
     // Dashboard card (read-only)
     gr+='<div class="ccard">'+
       '<div class="chead"><h3>'+cat.name+'</h3><span class="badge" style="background:rgba(34,199,122,0.15);border:1px solid rgba(34,199,122,0.4);color:#22c77a;">'+Math.round(dispAssigned>0?Math.min(100,Math.round(sp/dispAssigned*100)):0)+'% spent</span></div>'+
-      (pool>0?'<div style="background:rgba(34,199,122,0.08);border:1px solid rgba(34,199,122,0.25);border-radius:10px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;gap:8px;"><span style="font-size:.75rem;color:#22c77a;font-weight:700;">💡 Recommended</span><span style="font-size:.75rem;color:#e8edf5;font-weight:600;">'+money(pool)+'</span><span style="font-size:.72rem;color:var(--muted);">· '+Math.round(cat.pct*100)+'% of income</span></div>':'')+
+
 
       '<div class="row"><span>Assigned</span><strong>'+money(dispAssigned)+'</strong></div>'+
       '<div class="row"><span>Spent</span><strong>'+money(sp)+'</strong></div>'+
@@ -1118,10 +1156,16 @@ function render(){
     // Categories card (editable)
     gr_full+='<div class="ccard">'+
       '<div class="chead"><h3>'+cat.name+'</h3><span class="badge" style="background:rgba(34,199,122,0.15);border:1px solid rgba(34,199,122,0.4);color:#22c77a;">'+Math.round(dispAssigned>0?Math.min(100,Math.round(sp/dispAssigned*100)):0)+'% spent</span></div>'+
-      (pool>0?'<div style="background:rgba(34,199,122,0.08);border:1px solid rgba(34,199,122,0.25);border-radius:10px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;gap:8px;"><span style="font-size:.75rem;color:#22c77a;font-weight:700;">💡 Recommended</span><span style="font-size:.75rem;color:#e8edf5;font-weight:600;">'+money(pool)+'</span><span style="font-size:.72rem;color:var(--muted);">· '+Math.round(cat.pct*100)+'% of income</span></div>':'')+
 
-      '<div class="row"><span>Assigned</span><strong>'+money(dispAssigned)+'</strong></div>'+
-      '<div class="row"><span>Spent</span><strong>'+money(sp)+'</strong></div>'+
+
+      '<div class="row"><span>Budget</span><strong>'+money(dispAssigned)+'</strong></div>'+
+      (cat.subs.length>0 ?
+        '<div class="row"><span>Sub-budgeted</span><strong>'+money(subTotal)+'</strong></div>'+
+        '<div class="row"><span style="color:'+(unsubbed<0?'#f87171':'#22c77a')+'">'+
+          (unsubbed>=0?'Left to assign':'Over by')+'</span>'+
+          '<strong class="'+(unsubbed>=0?'good':'bad')+'">'+money(Math.abs(unsubbed))+'</strong></div>'
+      : '<div class="row" style="font-size:.75rem;color:var(--muted);"><span>Add subcategories below to split this budget</span></div>')+
+      '<div class="row" style="margin-top:4px;border-top:1px solid var(--border2);padding-top:4px;"><span>Spent</span><strong>'+money(sp)+'</strong></div>'+
       '<div class="row"><span>Remaining</span><strong class="'+(remaining>=0?'good':'bad')+'">'+money(remaining)+'</strong></div>'+
       sc+
     '</div>';
@@ -1215,36 +1259,22 @@ function renderStatCards(){
 // ── AUTH ──────────────────────────────────────────────────────────────────
 async function doLogin(){
   var msg = document.getElementById('authMsg');
+  var btn = document.querySelector('#loginForm button[type=submit]');
   msg.style.color = '#6b7a99';
   msg.textContent = 'Signing in...';
-  authInProgress = true;
-  var {data, error} = await sb.auth.signInWithPassword({
-    email: document.getElementById('authEmail').value,
-    password: document.getElementById('authPass').value
-  });
-  if(error){
+  if(btn) btn.disabled = true;
+  try {
+    var {data, error} = await sb.auth.signInWithPassword({
+      email: document.getElementById('authEmail').value.trim(),
+      password: document.getElementById('authPass').value
+    });
+    if(error) throw error;
+    await initApp(data.user);
+  } catch(e) {
     msg.style.color = '#f87171';
-    msg.textContent = '❌ Incorrect email or password. Please try again.';
-    setTimeout(function(){ authInProgress = false; }, 1500);
-    return;
+    msg.textContent = '❌ ' + (e.message || 'Incorrect email or password.');
+    if(btn) btn.disabled = false;
   }
-  msg.style.color = '#22c77a';
-  msg.textContent = '✅ Login successful! Loading your dashboard...';
-  setTimeout(async function(){
-    authInProgress = false;
-    currentUser = data.user;
-    document.getElementById('authScreen').style.display = 'none';
-    document.querySelector('.shell').style.display = 'grid';
-    var firstName = currentUser.user_metadata?.display_name || currentUser.user_metadata?.first_name || '';
-    var welcomeEl = document.getElementById('welcomeMsg');
-    var dashTitle = document.getElementById('dashWelcomeTitle');
-    if(dashTitle) dashTitle.textContent = firstName ? 'Welcome Back, ' + firstName + ' 👋' : 'Welcome Back 👋';
-    await loadState();
-    ensureMonth(STATE.activeMonth, null);
-    loadMonthIntoUI();
-    render();
-    renderWeightSliders();
-  }, 800);
 }
 
 async function doSignup(){
@@ -1273,31 +1303,107 @@ async function doSignupConfirm(){
 
 async function doLogout(){
   await sb.auth.signOut();
+  window.location.reload();
+}
+
+// ── PASSKEYS ───────────────────────────────────────────────────────────────
+async function signInWithPasskey(){
+  var msg = document.getElementById('authMsg');
+  try {
+    msg.style.color = '#6b7a99';
+    msg.textContent = 'Waiting for biometric...';
+    var { data, error } = await sb.auth.signInWithPasskey({ rpId: window.location.hostname });
+    if(error) throw error;
+    await initApp(data.user);
+  } catch(e) {
+    var errMsg = e.message || '';
+    msg.style.color = errMsg.toLowerCase().includes('cancel') || errMsg.toLowerCase().includes('abort') ? '#6b7a99' : '#f87171';
+    msg.textContent = errMsg.toLowerCase().includes('cancel') || errMsg.toLowerCase().includes('abort')
+      ? 'Cancelled.'
+      : '❌ Passkey sign-in failed. Try password instead.';
+  }
+}
+
+async function registerPasskey(){
+  var btn = document.getElementById('registerPasskeyBtn');
+  var origText = btn ? btn.innerHTML : '';
+  if(btn){ btn.textContent = 'Waiting for biometric...'; btn.disabled = true; }
+  try {
+    // Pass the correct RP ID based on current hostname
+    var rpId = window.location.hostname; // 'localhost' or 'santiagojleons.github.io'
+    var { data, error } = await sb.auth.registerPasskey({ rpId: rpId });
+    if(error) throw error;
+    alert('✅ Face ID / Touch ID registered! You can now sign in with biometrics.');
+  } catch(e) {
+    var msg = e.message || 'Unknown error';
+    var lower = msg.toLowerCase();
+    if(lower.includes('cancel') || lower.includes('abort') || lower.includes('not allowed')){
+      // User cancelled or browser blocked - silent
+    } else if(lower.includes('invalid domain') || lower.includes('rpid')){
+      alert('⚠️ Passkey domain mismatch.\n\nMake sure your Supabase Passkey settings match:\n• RP ID: ' + window.location.hostname + '\n• Origin: ' + window.location.origin);
+    } else {
+      alert('Could not register passkey: ' + msg);
+    }
+  }
+  if(btn){ btn.innerHTML = origText; btn.disabled = false; }
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────
-sb.auth.onAuthStateChange(async (event, session) => {
-  if(authInProgress) return;
-  currentUser = session?.user ?? null;
-  if(currentUser){
-    document.getElementById('authScreen').style.display = 'none';
-    document.querySelector('.shell').style.display = 'grid';
-    // Show welcome message
-    var firstName = currentUser.user_metadata?.display_name || currentUser.user_metadata?.first_name || '';
-    var welcomeEl = document.getElementById('welcomeMsg');
-    if(welcomeEl){
+function hideLoader(){ var l=document.getElementById('appLoader'); if(l) l.style.display='none'; }
+
+async function initApp(user){
+  try {
+    currentUser = user;
+    if(currentUser){
+      STATE = initState();
+      await loadState();
+      ensureMonth(STATE.activeMonth, null);
+      loadMonthIntoUI();
+      CURRENT_TAB = 'dashboard';
+      var firstName = currentUser.user_metadata?.display_name || currentUser.user_metadata?.first_name || '';
       var dashTitle = document.getElementById('dashWelcomeTitle');
       if(dashTitle) dashTitle.textContent = firstName ? 'Welcome Back, ' + firstName + ' 👋' : 'Welcome Back 👋';
+      hideLoader();
+      document.getElementById('authScreen').style.display = 'none';
+      document.querySelector('.shell').style.display = 'grid';
+      switchTab('dashboard');
+    } else {
+      hideLoader();
+      document.getElementById('authScreen').style.display = 'flex';
+      document.querySelector('.shell').style.display = 'none';
     }
-    await loadState();
-    ensureMonth(STATE.activeMonth, null);
-    loadMonthIntoUI();
-    render();
-  } else {
+  } catch(e) {
+    console.error('initApp error:', e);
+    hideLoader();
     document.getElementById('authScreen').style.display = 'flex';
     document.querySelector('.shell').style.display = 'none';
   }
+}
+
+// Check for existing session immediately on load
+// On load: check for saved session once
+sb.auth.getSession().then(({ data: { session } }) => {
+  initApp(session?.user ?? null);
+}).catch(function(){
+  showLogin();
 });
+
+// Safety net: 6s max loader time
+setTimeout(function(){
+  var l = document.getElementById('appLoader');
+  if(l && l.style.display !== 'none') showLogin();
+}, 6000);
+
+// Only handle signout via onAuthStateChange - login handled directly by doLogin
+sb.auth.onAuthStateChange(function(event, session){
+  if(event === 'SIGNED_OUT') showLogin();
+});
+
+function showLogin(){
+  hideLoader();
+  document.getElementById('authScreen').style.display = 'flex';
+  document.querySelector('.shell').style.display = 'none';
+}
 </script>
 </body>
 </html>
