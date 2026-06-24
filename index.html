@@ -1467,33 +1467,33 @@ async function toggleNotifications(){
     alert('Notifications not available. Make sure you are on the live site (not file://) and try again.');
     return;
   }
+  // Read state from the button's own data attribute — most reliable source of truth
+  var btn = document.getElementById('notifBtn');
+  var currentlyEnabled = btn && btn.getAttribute('data-notif-on') === '1';
+
   OneSignalDeferred.push(async function(OneSignal){
     try {
-      var stateKey = 'notif_enabled_' + (currentUser ? currentUser.id : 'guest');
-      var isEnabled = localStorage.getItem(stateKey) === '1';
-      var permission = await OneSignal.Notifications.permission;
-
-      if(isEnabled){
-        // Currently ON — disable
+      if(currentlyEnabled){
+        // Currently ON → ask to disable
         if(confirm('Disable push notifications for Budget Tracker?')){
           await OneSignal.User.PushSubscription.optOut();
-          localStorage.setItem(stateKey, '0');
           updateNotifBtn(false);
         }
       } else {
-        // Currently OFF — enable
-        if(!permission){
-          // Need browser permission first
-          await OneSignal.Notifications.requestPermission();
-          permission = await OneSignal.Notifications.permission;
-        }
-        if(permission){
-          await OneSignal.User.PushSubscription.optIn();
-          localStorage.setItem(stateKey, '1');
-          updateNotifBtn(true);
-          if(currentUser) OneSignal.User.addTag('user_id', currentUser.id);
-        } else {
-          alert('Notifications blocked. Please allow notifications in your browser/phone settings and try again.');
+        // Currently OFF → ask to enable
+        if(confirm('Enable push notifications for Budget Tracker?')){
+          var permission = await OneSignal.Notifications.permission;
+          if(!permission){
+            await OneSignal.Notifications.requestPermission();
+            permission = await OneSignal.Notifications.permission;
+          }
+          if(permission){
+            await OneSignal.User.PushSubscription.optIn();
+            updateNotifBtn(true);
+            if(currentUser) OneSignal.User.addTag('user_id', currentUser.id);
+          } else {
+            alert('Notifications blocked. Please allow notifications in your browser/phone settings and try again.');
+          }
         }
       }
     } catch(e) {
@@ -1506,6 +1506,7 @@ async function toggleNotifications(){
 function updateNotifBtn(enabled){
   var btn = document.getElementById('notifBtn');
   if(!btn) return;
+  btn.setAttribute('data-notif-on', enabled ? '1' : '0');
   if(enabled){
     btn.style.color = '#22c77a';
     btn.style.borderColor = 'rgba(34,199,122,0.4)';
@@ -1522,18 +1523,14 @@ function updateNotifBtn(enabled){
 // Check notification status on load and update button
 function checkNotifStatus(){
   if(typeof OneSignalDeferred === 'undefined') return;
-  var stateKey = 'notif_enabled_' + (currentUser ? currentUser.id : 'guest');
-  var isEnabled = localStorage.getItem(stateKey) === '1';
-  updateNotifBtn(isEnabled);
-  if(isEnabled){
-    // Make sure OneSignal subscription is active
-    OneSignalDeferred.push(async function(OneSignal){
-      try {
-        await OneSignal.User.PushSubscription.optIn();
-        if(currentUser) OneSignal.User.addTag('user_id', currentUser.id);
-      } catch(e){ console.log('checkNotifStatus optIn error:', e.message); }
-    });
-  }
+  OneSignalDeferred.push(async function(OneSignal){
+    try {
+      var optedIn = OneSignal.User.PushSubscription.optedIn;
+      var permission = await OneSignal.Notifications.permission;
+      updateNotifBtn(!!(optedIn && permission));
+      if(optedIn && permission && currentUser) OneSignal.User.addTag('user_id', currentUser.id);
+    } catch(e){ console.log('checkNotifStatus:', e.message); }
+  });
 }
 
 async function registerPasskey(){
