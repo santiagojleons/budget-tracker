@@ -240,23 +240,11 @@ tbody tr:last-child td{border-bottom:none;}
   </script>
 </head>
 <body>
-  <!-- ── PWA Install Banner ── -->
   <div id="installBanner">
-    <div class="ib-icon">
-      <svg width="22" height="22" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="36" height="36" rx="10" fill="rgba(34,199,122,0.15)"/>
-        <rect x="5" y="10" width="26" height="17" rx="3" stroke="#22c77a" stroke-width="1.7"/>
-        <rect x="5" y="15" width="26" height="4" fill="rgba(34,199,122,0.25)" stroke="none"/>
-        <rect x="8" y="22" width="6" height="2.5" rx="1" fill="#22c77a"/>
-        <circle cx="25" cy="23.25" r="2" fill="rgba(34,199,122,0.4)" stroke="#22c77a" stroke-width="1"/>
-      </svg>
-    </div>
-    <div class="ib-text">
-      <div class="ib-title">Add Budget Tracker to Home Screen</div>
-      <div class="ib-sub" id="installSubText">Install the app for quick access</div>
-    </div>
+    <div class="ib-icon"><svg width="22" height="22" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="10" fill="rgba(34,199,122,0.15)"/><rect x="5" y="10" width="26" height="17" rx="3" stroke="#22c77a" stroke-width="1.7"/><rect x="5" y="15" width="26" height="4" fill="rgba(34,199,122,0.25)"/><rect x="8" y="22" width="6" height="2.5" rx="1" fill="#22c77a"/><circle cx="25" cy="23.25" r="2" fill="rgba(34,199,122,0.4)" stroke="#22c77a" stroke-width="1"/></svg></div>
+    <div class="ib-text"><div class="ib-title">Add Budget Tracker to Home Screen</div><div class="ib-sub" id="installSubText">Install the app for quick access</div></div>
     <button class="ib-install" id="installBtn">Install</button>
-    <button class="ib-close" id="installClose" title="Dismiss">✕</button>
+    <button class="ib-close" id="installClose">✕</button>
   </div>
 
 
@@ -1481,29 +1469,27 @@ async function toggleNotifications(){
   }
   OneSignalDeferred.push(async function(OneSignal){
     try {
-      // Use optedIn (subscription state) NOT permission (browser grant) - they are different!
-      // permission=true even after optOut(), so we must check optedIn to know real state
-      var optedIn = OneSignal.User.PushSubscription.optedIn;
+      var stateKey = 'notif_enabled_' + (currentUser ? currentUser.id : 'guest');
+      var isEnabled = localStorage.getItem(stateKey) === '1';
       var permission = await OneSignal.Notifications.permission;
 
-      if(optedIn && permission){
-        // Currently subscribed — offer to disable
+      if(isEnabled){
+        // Currently ON — disable
         if(confirm('Disable push notifications for Budget Tracker?')){
           await OneSignal.User.PushSubscription.optOut();
+          localStorage.setItem(stateKey, '0');
           updateNotifBtn(false);
         }
-      } else if(permission && !optedIn){
-        // Browser permission granted but opted out — just opt back in, no prompt needed
-        await OneSignal.User.PushSubscription.optIn();
-        var nowOptedIn = OneSignal.User.PushSubscription.optedIn;
-        updateNotifBtn(!!nowOptedIn);
-        if(nowOptedIn && currentUser) OneSignal.User.addTag('user_id', currentUser.id);
       } else {
-        // No browser permission yet — request it
-        await OneSignal.Notifications.requestPermission();
-        var granted = await OneSignal.Notifications.permission;
-        if(granted){
+        // Currently OFF — enable
+        if(!permission){
+          // Need browser permission first
+          await OneSignal.Notifications.requestPermission();
+          permission = await OneSignal.Notifications.permission;
+        }
+        if(permission){
           await OneSignal.User.PushSubscription.optIn();
+          localStorage.setItem(stateKey, '1');
           updateNotifBtn(true);
           if(currentUser) OneSignal.User.addTag('user_id', currentUser.id);
         } else {
@@ -1536,14 +1522,18 @@ function updateNotifBtn(enabled){
 // Check notification status on load and update button
 function checkNotifStatus(){
   if(typeof OneSignalDeferred === 'undefined') return;
-  OneSignalDeferred.push(async function(OneSignal){
-    try {
-      var optedIn = OneSignal.User.PushSubscription.optedIn;
-      var permission = await OneSignal.Notifications.permission;
-      updateNotifBtn(!!(optedIn && permission));
-      if(optedIn && permission && currentUser) OneSignal.User.addTag('user_id', currentUser.id);
-    } catch(e){ console.log('checkNotifStatus error:', e.message); }
-  });
+  var stateKey = 'notif_enabled_' + (currentUser ? currentUser.id : 'guest');
+  var isEnabled = localStorage.getItem(stateKey) === '1';
+  updateNotifBtn(isEnabled);
+  if(isEnabled){
+    // Make sure OneSignal subscription is active
+    OneSignalDeferred.push(async function(OneSignal){
+      try {
+        await OneSignal.User.PushSubscription.optIn();
+        if(currentUser) OneSignal.User.addTag('user_id', currentUser.id);
+      } catch(e){ console.log('checkNotifStatus optIn error:', e.message); }
+    });
+  }
 }
 
 async function registerPasskey(){
@@ -1628,55 +1618,13 @@ function showLogin(){
   document.querySelector('.shell').style.display = 'none';
 }
 
-// ── PWA Install Banner ──
-var _installPromptEvent = null;
-var _installDismissKey = 'pwa_install_dismissed';
-window.addEventListener('beforeinstallprompt', function(e){
-  e.preventDefault();
-  _installPromptEvent = e;
-  if(!localStorage.getItem(_installDismissKey)) showInstallBanner('android');
-});
-(function(){
-  var isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  var isStandalone = ('standalone' in window.navigator) && window.navigator.standalone;
-  if(isIos && !isStandalone && !localStorage.getItem(_installDismissKey)) showInstallBanner('ios');
-})();
-function showInstallBanner(platform){
-  var banner = document.getElementById('installBanner');
-  var subText = document.getElementById('installSubText');
-  var installBtn = document.getElementById('installBtn');
-  if(!banner) return;
-  if(platform==='ios'){
-    if(subText) subText.textContent = 'Tap the Share button then "Add to Home Screen"';
-    if(installBtn) installBtn.style.display='none';
-  } else {
-    if(subText) subText.textContent = 'Install for quick, full-screen access';
-    if(installBtn) installBtn.style.display='';
-  }
-  banner.classList.add('show');
-}
-var _ib = document.getElementById('installBtn');
-if(_ib) _ib.addEventListener('click', function(){
-  if(!_installPromptEvent) return;
-  _installPromptEvent.prompt();
-  _installPromptEvent.userChoice.then(function(c){
-    if(c.outcome==='accepted'){
-      document.getElementById('installBanner').classList.remove('show');
-      localStorage.setItem(_installDismissKey,'1');
-    }
-    _installPromptEvent = null;
-  });
-});
-var _ic = document.getElementById('installClose');
-if(_ic) _ic.addEventListener('click', function(){
-  document.getElementById('installBanner').classList.remove('show');
-  localStorage.setItem(_installDismissKey,'1');
-});
-window.addEventListener('appinstalled', function(){
-  var b = document.getElementById('installBanner');
-  if(b) b.classList.remove('show');
-  localStorage.setItem(_installDismissKey,'1');
-});
+var _installPromptEvent=null,_installDismissKey='pwa_install_dismissed';
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_installPromptEvent=e;if(!localStorage.getItem(_installDismissKey))showInstallBanner('android');});
+(function(){var isIos=/iphone|ipad|ipod/i.test(navigator.userAgent),isStandalone=('standalone' in window.navigator)&&window.navigator.standalone;if(isIos&&!isStandalone&&!localStorage.getItem(_installDismissKey))showInstallBanner('ios');})();
+function showInstallBanner(p){var b=document.getElementById('installBanner'),s=document.getElementById('installSubText'),i=document.getElementById('installBtn');if(!b)return;if(p==='ios'){if(s)s.textContent='Tap the Share button then "Add to Home Screen"';if(i)i.style.display='none';}else{if(s)s.textContent='Install for quick, full-screen access';if(i)i.style.display='';}b.classList.add('show');}
+var _ib=document.getElementById('installBtn');if(_ib)_ib.addEventListener('click',function(){if(!_installPromptEvent)return;_installPromptEvent.prompt();_installPromptEvent.userChoice.then(function(c){if(c.outcome==='accepted'){document.getElementById('installBanner').classList.remove('show');localStorage.setItem(_installDismissKey,'1');}_installPromptEvent=null;});});
+var _ic=document.getElementById('installClose');if(_ic)_ic.addEventListener('click',function(){document.getElementById('installBanner').classList.remove('show');localStorage.setItem(_installDismissKey,'1');});
+window.addEventListener('appinstalled',function(){var b=document.getElementById('installBanner');if(b)b.classList.remove('show');localStorage.setItem(_installDismissKey,'1');});
 
 </script>
 </body>
