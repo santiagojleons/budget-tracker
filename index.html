@@ -1481,21 +1481,33 @@ async function toggleNotifications(){
   }
   OneSignalDeferred.push(async function(OneSignal){
     try {
+      // Use optedIn (subscription state) NOT permission (browser grant) - they are different!
+      // permission=true even after optOut(), so we must check optedIn to know real state
+      var optedIn = OneSignal.User.PushSubscription.optedIn;
       var permission = await OneSignal.Notifications.permission;
-      if(permission){
+
+      if(optedIn && permission){
+        // Currently subscribed — offer to disable
         if(confirm('Disable push notifications for Budget Tracker?')){
           await OneSignal.User.PushSubscription.optOut();
           updateNotifBtn(false);
         }
+      } else if(permission && !optedIn){
+        // Browser permission granted but opted out — just opt back in, no prompt needed
+        await OneSignal.User.PushSubscription.optIn();
+        var nowOptedIn = OneSignal.User.PushSubscription.optedIn;
+        updateNotifBtn(!!nowOptedIn);
+        if(nowOptedIn && currentUser) OneSignal.User.addTag('user_id', currentUser.id);
       } else {
+        // No browser permission yet — request it
         await OneSignal.Notifications.requestPermission();
         var granted = await OneSignal.Notifications.permission;
-        updateNotifBtn(granted);
-        if(granted && currentUser){
-          OneSignal.User.addTag('user_id', currentUser.id);
-        }
-        if(!granted){
-          alert('Notifications blocked. Please allow notifications in your browser settings and try again.');
+        if(granted){
+          await OneSignal.User.PushSubscription.optIn();
+          updateNotifBtn(true);
+          if(currentUser) OneSignal.User.addTag('user_id', currentUser.id);
+        } else {
+          alert('Notifications blocked. Please allow notifications in your browser/phone settings and try again.');
         }
       }
     } catch(e) {
@@ -1526,9 +1538,10 @@ function checkNotifStatus(){
   if(typeof OneSignalDeferred === 'undefined') return;
   OneSignalDeferred.push(async function(OneSignal){
     try {
-      var enabled = await OneSignal.Notifications.permission;
-      updateNotifBtn(enabled);
-      if(enabled && currentUser) OneSignal.User.addTag('user_id', currentUser.id);
+      var optedIn = OneSignal.User.PushSubscription.optedIn;
+      var permission = await OneSignal.Notifications.permission;
+      updateNotifBtn(!!(optedIn && permission));
+      if(optedIn && permission && currentUser) OneSignal.User.addTag('user_id', currentUser.id);
     } catch(e){ console.log('checkNotifStatus error:', e.message); }
   });
 }
@@ -1618,62 +1631,51 @@ function showLogin(){
 // ── PWA Install Banner ──
 var _installPromptEvent = null;
 var _installDismissKey = 'pwa_install_dismissed';
-
-window.addEventListener('beforeinstallprompt', function(e) {
+window.addEventListener('beforeinstallprompt', function(e){
   e.preventDefault();
   _installPromptEvent = e;
-  // Only show if user hasn't permanently dismissed
-  if(!localStorage.getItem(_installDismissKey)){
-    showInstallBanner('android');
-  }
+  if(!localStorage.getItem(_installDismissKey)) showInstallBanner('android');
 });
-
-// iOS detection - Safari doesn't fire beforeinstallprompt
 (function(){
   var isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  var isInStandaloneMode = ('standalone' in window.navigator) && window.navigator.standalone;
-  if(isIos && !isInStandaloneMode && !localStorage.getItem(_installDismissKey)){
-    showInstallBanner('ios');
-  }
+  var isStandalone = ('standalone' in window.navigator) && window.navigator.standalone;
+  if(isIos && !isStandalone && !localStorage.getItem(_installDismissKey)) showInstallBanner('ios');
 })();
-
 function showInstallBanner(platform){
   var banner = document.getElementById('installBanner');
   var subText = document.getElementById('installSubText');
   var installBtn = document.getElementById('installBtn');
   if(!banner) return;
-  if(platform === 'ios'){
+  if(platform==='ios'){
     if(subText) subText.textContent = 'Tap the Share button then "Add to Home Screen"';
-    if(installBtn) installBtn.style.display = 'none';
+    if(installBtn) installBtn.style.display='none';
   } else {
     if(subText) subText.textContent = 'Install for quick, full-screen access';
-    if(installBtn) installBtn.style.display = '';
+    if(installBtn) installBtn.style.display='';
   }
   banner.classList.add('show');
 }
-
-document.getElementById('installBtn') && document.getElementById('installBtn').addEventListener('click', function(){
+var _ib = document.getElementById('installBtn');
+if(_ib) _ib.addEventListener('click', function(){
   if(!_installPromptEvent) return;
   _installPromptEvent.prompt();
-  _installPromptEvent.userChoice.then(function(choice){
-    if(choice.outcome === 'accepted'){
+  _installPromptEvent.userChoice.then(function(c){
+    if(c.outcome==='accepted'){
       document.getElementById('installBanner').classList.remove('show');
-      localStorage.setItem(_installDismissKey, '1');
+      localStorage.setItem(_installDismissKey,'1');
     }
     _installPromptEvent = null;
   });
 });
-
-document.getElementById('installClose') && document.getElementById('installClose').addEventListener('click', function(){
+var _ic = document.getElementById('installClose');
+if(_ic) _ic.addEventListener('click', function(){
   document.getElementById('installBanner').classList.remove('show');
-  localStorage.setItem(_installDismissKey, '1');
+  localStorage.setItem(_installDismissKey,'1');
 });
-
-// If already installed as PWA, hide banner
 window.addEventListener('appinstalled', function(){
-  var banner = document.getElementById('installBanner');
-  if(banner) banner.classList.remove('show');
-  localStorage.setItem(_installDismissKey, '1');
+  var b = document.getElementById('installBanner');
+  if(b) b.classList.remove('show');
+  localStorage.setItem(_installDismissKey,'1');
 });
 
 </script>
