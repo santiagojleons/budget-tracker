@@ -205,8 +205,60 @@ tbody tr:last-child td{border-bottom:none;}
 
 @media(max-width:860px){
   .shell{grid-template-columns:1fr;}
-  .side{border-right:none;border-bottom:1px solid var(--border);padding:16px;}
+  .side{display:none;}
+  .main{padding:16px;padding-bottom:calc(74px + env(safe-area-inset-bottom));overflow-y:visible;}
   .stat-row{grid-template-columns:repeat(2,1fr);}
+  html,body{overflow-y:auto;height:auto;}
+  .shell{min-height:100vh;overflow:visible;}
+}
+/* Mobile bottom nav — hidden by default, JS shows after login */
+#mobileNav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--sidebar);border-top:1px solid var(--border);
+  padding:8px 0;padding-bottom:calc(8px + env(safe-area-inset-bottom));
+  z-index:9998;justify-content:space-around;align-items:flex-end;
+  box-shadow:0 -4px 20px rgba(0,0,0,.4);
+}
+.mnav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:transparent;border:none;color:var(--muted2);
+  font-family:Inter,sans-serif;font-size:.6rem;font-weight:600;
+  letter-spacing:.03em;text-transform:uppercase;
+  cursor:pointer;padding:4px 6px;border-radius:8px;min-width:54px;
+  transition:color .15s;-webkit-tap-highlight-color:transparent;
+}
+.mnav-btn svg{opacity:.5;transition:opacity .15s;}
+.mnav-btn.active{color:#22c77a;}
+.mnav-btn.active svg{opacity:1;}
+.mnav-fab{
+  position:absolute;top:-18px;width:44px;height:44px;
+  background:linear-gradient(135deg,#22c77a,#16a362);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(34,199,122,.5);
+}
+/* Mobile tx cards */
+@media(max-width:860px){
+  .tx-table-wrap{display:none;}
+  .tx-cards{display:flex;flex-direction:column;gap:10px;}
+}
+@media(min-width:861px){
+  .tx-cards{display:none;}
+  .tx-table-wrap{display:block;}
+}
+.tx-card{background:var(--soft);border:1px solid var(--border);border-radius:12px;padding:13px 14px;}
+.tx-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.tx-card-name{font-size:.88rem;font-weight:700;color:var(--text);flex:1;min-width:0;word-break:break-word;}
+.tx-card-amt{font-size:.92rem;font-weight:800;color:#22c77a;white-space:nowrap;}
+.tx-card-meta{font-size:.73rem;color:var(--muted);line-height:1.5;margin-top:5px;}
+.tx-card-actions{display:flex;gap:8px;margin-top:10px;}
+/* Dashboard overview compact — scope to #catGrid only, NOT categories tab */
+@media(max-width:860px){
+  #catGrid .ccard .scard,
+  #catGrid .ccard .add-sub-row,
+  #catGrid .ccard .presets-wrap{display:none;}
+  #catGrid.grid{grid-template-columns:1fr 1fr;}
+  #catGridFull.grid{grid-template-columns:1fr;}
 }
 </style>
   <!-- OneSignal Push Notifications -->
@@ -431,12 +483,13 @@ tbody tr:last-child td{border-bottom:none;}
         <button class="gbtn sm" style="margin-top:0" onclick="switchTab('add-expense')">+ Add Expense</button>
       </div>
       <div class="card">
-        <div style="overflow-x:auto">
+        <div class="tx-table-wrap">
           <table>
             <thead><tr><th>Name</th><th>Category</th><th>Subcategory</th><th>Date</th><th>Amount</th><th></th></tr></thead>
             <tbody id="txBody"></tbody>
           </table>
         </div>
+        <div class="tx-cards" id="txCards"></div>
       </div>
     </div>
 
@@ -1284,8 +1337,12 @@ function render(){
   renderStatCards();
 
   // TRANSACTIONS
-  if(!d.txs.length){ $id("txBody").innerHTML='<tr><td colspan="6" class="empty">No transactions yet.</td></tr>'; return; }
-  var rows="";
+  if(!d.txs.length){
+    $id("txBody").innerHTML='<tr><td colspan="6" class="empty">No transactions yet.</td></tr>';
+    var _tc=$id("txCards"); if(_tc) _tc.innerHTML='<p style="color:var(--muted);font-size:.84rem;text-align:center;padding:32px 0;">No transactions yet.</p>';
+    return;
+  }
+  var rows="", cards="";
   for(var i=0;i<d.txs.length;i++){
     var tx=d.txs[i];
     rows+='<tr>'+
@@ -1296,8 +1353,20 @@ function render(){
         '<button class="xbtn" onclick="deleteTx(\''+tx.id+'\')">&#10005;</button>'+
       '</div></td>'+
     '</tr>';
+    cards+='<div class="tx-card">'+
+      '<div class="tx-card-top">'+
+        '<span class="tx-card-name">'+tx.name+'</span>'+
+        '<span class="tx-card-amt">'+money(tx.amt)+'</span>'+
+      '</div>'+
+      '<div class="tx-card-meta">'+tx.cat+(tx.sub?' &middot; '+tx.sub:'')+' &middot; '+tx.date+'</div>'+
+      '<div class="tx-card-actions">'+
+        '<button class="ebtn" onclick="openEdit(\''+tx.id+'\')">&#9998; Edit</button>'+
+        '<button class="xbtn" onclick="deleteTx(\''+tx.id+'\')">&#10005; Delete</button>'+
+      '</div>'+
+    '</div>';
   }
   $id("txBody").innerHTML=rows;
+  var _tc=$id("txCards"); if(_tc) _tc.innerHTML=cards;
   renderRecentTx();
 }
 
@@ -1336,6 +1405,8 @@ function switchTab(tab){
     var el = document.getElementById('nav-'+n);
     if(el) el.classList.toggle('active', n===tab);
   });
+  document.querySelectorAll('.mnav-btn').forEach(function(b){ b.classList.remove('active'); });
+  var _mb=document.getElementById('mnav-'+tab); if(_mb) _mb.classList.add('active');
   if(tab==='dashboard'||tab==='categories') render();
   if(tab==='income'){ loadMonthIntoUI(); renderWeightInputs(); updateIncomePreview(); }
   if(tab==='transactions'){ render(); }
@@ -1568,17 +1639,20 @@ async function initApp(user){
       hideLoader();
       document.getElementById('authScreen').style.display = 'none';
       document.querySelector('.shell').style.display = 'grid';
+      document.getElementById('mobileNav').style.display='flex';
       switchTab('dashboard');
     } else {
       hideLoader();
       document.getElementById('authScreen').style.display = 'flex';
       document.querySelector('.shell').style.display = 'none';
+      document.getElementById('mobileNav').style.display='none';
     }
   } catch(e) {
     console.error('initApp error:', e);
     hideLoader();
     document.getElementById('authScreen').style.display = 'flex';
     document.querySelector('.shell').style.display = 'none';
+      document.getElementById('mobileNav').style.display='none';
   }
 }
 
@@ -1605,6 +1679,7 @@ function showLogin(){
   hideLoader();
   document.getElementById('authScreen').style.display = 'flex';
   document.querySelector('.shell').style.display = 'none';
+      document.getElementById('mobileNav').style.display='none';
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1768,5 +1843,31 @@ saveIncomeToState = function() {
 setTimeout(function() { renderDashboardProfiles(); renderIncomeProfiles(); }, 700);
 
 </script>
+
+<!-- Mobile Bottom Nav — shown after login only via JS -->
+<nav id="mobileNav">
+  <button class="mnav-btn active" id="mnav-dashboard" onclick="switchTab('dashboard')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    Home
+  </button>
+  <button class="mnav-btn" id="mnav-transactions" onclick="switchTab('transactions')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+    Transactions
+  </button>
+  <button class="mnav-btn" id="mnav-add-expense" onclick="switchTab('add-expense')" style="position:relative;">
+    <span class="mnav-fab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#03120a" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </span>
+    <span style="margin-top:20px;display:block;">Add</span>
+  </button>
+  <button class="mnav-btn" id="mnav-categories" onclick="switchTab('categories')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    Categories
+  </button>
+  <button class="mnav-btn" id="mnav-income" onclick="switchTab('income')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+    Budget
+  </button>
+</nav>
 </body>
 </html>
