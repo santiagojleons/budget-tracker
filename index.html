@@ -6,12 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
   <meta http-equiv="Pragma" content="no-cache"/>
   <meta http-equiv="Expires" content="0"/>
-<meta name="theme-color" content="#0a0d14">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Budget Tracker">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Budget Tracker</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -208,112 +203,11 @@ tbody tr:last-child td{border-bottom:none;}
 .auth-logo{font-size:1.15rem;font-weight:800;color:#22c77a;text-align:center;margin-bottom:4px;letter-spacing:-.01em;}
 .auth-sub{font-size:.82rem;color:var(--muted);text-align:center;margin-bottom:8px;}
 
-
-/* ══════ MOBILE ≤768px ══════ */
-#bottomNav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--sidebar);border-top:1px solid var(--border);z-index:200;padding:0 4px;padding-bottom:env(safe-area-inset-bottom);}
-.bn-bar{display:flex;justify-content:space-around;align-items:center;}
-.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px 4px;gap:2px;background:transparent;border:none;color:var(--muted);cursor:pointer;font-family:Inter,sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.02em;transition:color .15s;min-width:0;-webkit-tap-highlight-color:transparent;}
-.bn-icon-wrap{width:46px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:10px;transition:background .15s;margin-bottom:1px;}
-.bn-item svg{flex-shrink:0;}
-.bn-item span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
-.bn-item.active{color:var(--green);}
-.bn-item.active .bn-icon-wrap{background:rgba(34,199,122,0.15);}
-.bn-item.active span{font-weight:700;}
-
-#moreDrawer{display:none;position:fixed;inset:0;z-index:300;}
-#moreDrawer.open{display:block;}
-#moreOverlay{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);}
-#moreSheet{position:absolute;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--border2);border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:4px;}
-.more-handle{width:36px;height:4px;background:var(--border2);border-radius:999px;margin:0 auto 16px;}
-.more-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;background:transparent;border:none;color:var(--text);font-family:Inter,sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;width:100%;text-align:left;transition:background .12s;-webkit-tap-highlight-color:transparent;}
-.more-item:active{background:var(--soft);}
-.more-item svg{flex-shrink:0;opacity:.8;}
-.more-item.danger{color:#fca5a5;}
-.more-section-label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;padding:12px 14px 4px;font-weight:600;}
-
-/* ── Compact Category Cards (mobile) ──
-   Each ccard becomes a slim row with expand toggle */
-.ccard-compact{background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .15s;}
-.ccard-compact:not(:last-child){margin-bottom:10px;}
-.ccard-row{display:flex;align-items:center;gap:10px;padding:13px 14px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;}
-.ccard-row:active{background:var(--soft);}
-.ccard-chevron{flex-shrink:0;color:var(--muted);transition:transform .2s;}
-.ccard-compact.open .ccard-chevron{transform:rotate(90deg);}
-.ccard-title-col{flex:1;min-width:0;}
-.ccard-name{font-size:.9rem;font-weight:700;color:var(--text);}
-.ccard-meta{font-size:.72rem;color:var(--muted);margin-top:1px;}
-.ccard-right{text-align:right;flex-shrink:0;}
-.ccard-amt{font-size:.9rem;font-weight:700;color:var(--text);}
-.ccard-badge{font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:999px;background:var(--glow);border:1px solid rgba(34,199,122,.25);color:var(--green);margin-top:2px;display:inline-block;}
-.ccard-prog{height:3px;background:var(--border);margin:0 14px;}
-.ccard-prog-fill{height:3px;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--gdark));transition:width .4s;max-width:100%;}
-.ccard-prog-fill.over{background:linear-gradient(90deg,var(--warn),var(--red));}
-.ccard-body{padding:0 14px 14px;display:none;flex-direction:column;gap:8px;}
-.ccard-compact.open .ccard-body{display:flex;}
-.ccard-summary{display:flex;gap:8px;margin-bottom:4px;}
-.ccard-sum-item{flex:1;background:var(--soft);border-radius:10px;padding:8px 10px;text-align:center;}
-.ccard-sum-label{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
-.ccard-sum-val{font-size:.85rem;font-weight:700;margin-top:2px;}
-/* Subcards inside compact view */
-.scard-compact{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
-.scard-compact-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
-.scard-compact-name{font-size:.82rem;font-weight:600;color:var(--text);}
-.scard-compact-budget{font-size:.82rem;font-weight:700;color:var(--text);}
-.scard-compact-prog{height:4px;background:var(--border);border-radius:999px;overflow:hidden;margin-bottom:4px;}
-.scard-compact-fill{height:4px;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--gdark));transition:width .3s;}
-.scard-compact-fill.over{background:linear-gradient(90deg,var(--warn),var(--red));}
-.scard-compact-foot{display:flex;justify-content:space-between;}
-.scard-compact-spent{font-size:.7rem;color:var(--muted);}
-.scard-compact-left{font-size:.7rem;font-weight:600;}
-/* Edit controls inside expanded card */
-.scard-edit-row{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 10px;}
-.scard-edit-name{flex:1;background:transparent;border:none;color:var(--text);font-size:.82rem;font-weight:600;outline:none;font-family:Inter,sans-serif;min-width:0;}
-.scard-edit-budget{width:72px;background:var(--soft);border:1px solid var(--border2);border-radius:7px;color:var(--text);font-size:.82rem;padding:4px 7px;text-align:right;outline:none;font-family:Inter,sans-serif;}
-.scard-edit-budget:focus{border-color:var(--green);}
-.scard-edit-del{background:rgba(239,68,68,.1);color:#fca5a5;border:none;border-radius:7px;padding:4px 8px;font-size:.72rem;cursor:pointer;-webkit-tap-highlight-color:transparent;}
-.scard-edit-del:active{background:rgba(239,68,68,.25);}
-.ccard-add-row{display:flex;gap:8px;margin-top:4px;}
-.ccard-add-inp{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:9px;color:var(--text);padding:8px 10px;font-size:.82rem;outline:none;font-family:Inter,sans-serif;}
-.ccard-add-inp:focus{border-color:var(--green);}
-.ccard-add-btn{background:linear-gradient(135deg,#22c77a,#16a362);color:#03120a;border:none;border-radius:9px;padding:8px 14px;font-size:.82rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
-.presets-compact{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
-.preset-compact-chip{padding:4px 10px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:.73rem;cursor:pointer;font-family:Inter,sans-serif;transition:all .12s;-webkit-tap-highlight-color:transparent;}
-.preset-compact-chip:not([disabled]):active{border-color:var(--green);color:var(--green);background:rgba(34,199,122,0.08);}
-.preset-compact-chip[disabled]{opacity:.35;cursor:default;}
-
-@media(max-width:768px){
-  .side{display:none !important;}
-  .shell{grid-template-columns:1fr !important;}
-  .main{padding:14px 14px calc(72px + env(safe-area-inset-bottom));gap:14px;}
-  #bottomNav{display:block;}
-  .card{padding:14px;}
-  .stat-row{grid-template-columns:repeat(2,1fr);gap:10px;}
-  .stat-card{padding:12px 14px;}
-  .stat-val{font-size:1.25rem;}
-  .stat-label{font-size:.65rem;}
-  .tab-title{font-size:1.2rem !important;}
-  /* Hide desktop grid, show compact cards */
-  .grid{display:none !important;}
-  #mobileCategories{display:flex;flex-direction:column;}
-  th,td{padding:9px 8px;font-size:.78rem;}
-  .auth-card{padding:28px 20px;max-width:100%;border-radius:16px;}
-  .modal{max-width:100% !important;border-radius:20px 20px 0 0 !important;position:fixed !important;bottom:0 !important;left:0 !important;right:0 !important;padding-bottom:calc(20px + env(safe-area-inset-bottom)) !important;}
-  .modal-bg{align-items:flex-end !important;}
-  .tab-header{margin-bottom:8px;}
-  .tab-sub{font-size:.78rem;}
+@media(max-width:860px){
+  .shell{grid-template-columns:1fr;}
+  .side{border-right:none;border-bottom:1px solid var(--border);padding:16px;}
+  .stat-row{grid-template-columns:repeat(2,1fr);}
 }
-@media(min-width:769px){#mobileCategories{display:none !important;}}
-
-
-#installBanner{display:none;position:fixed;top:0;left:0;right:0;z-index:9998;background:linear-gradient(135deg,#0f1320,#1a2035);border-bottom:1px solid rgba(34,199,122,0.3);padding:12px 16px;align-items:center;gap:12px;box-shadow:0 4px 24px rgba(0,0,0,0.4);}
-#installBanner.show{display:flex;}
-#installBanner .ib-icon{flex-shrink:0;width:40px;height:40px;background:rgba(34,199,122,0.12);border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(34,199,122,0.25);}
-#installBanner .ib-text{flex:1;min-width:0;}
-#installBanner .ib-title{font-size:.88rem;font-weight:700;color:var(--text);line-height:1.2;}
-#installBanner .ib-sub{font-size:.74rem;color:var(--muted);margin-top:2px;}
-#installBanner .ib-install{flex-shrink:0;background:linear-gradient(135deg,#22c77a,#16a362);color:#03120a;border:none;border-radius:8px;padding:7px 14px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap;}
-#installBanner .ib-close{flex-shrink:0;background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;padding:4px 6px;line-height:1;border-radius:6px;}
-
 </style>
   <!-- OneSignal Push Notifications -->
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
@@ -326,22 +220,14 @@ tbody tr:last-child td{border-bottom:none;}
         serviceWorkerPath: "/budget-tracker/OneSignalSDKWorker.js",
         serviceWorkerParam: { scope: "/budget-tracker/" },
         notifyButton: { enable: false },
-        promptOptions: { slidedown: { prompts: [] } },
-        notificationClickHandlerMatch: "origin",
-        notificationClickHandlerAction: "navigate",
-        defaultNotificationUrl: "https://santiagojleons.github.io/budget-tracker/"
+        promptOptions: {
+          slidedown: { prompts: [] }
+        }
       });
     });
   </script>
 </head>
 <body>
-  <div id="installBanner">
-    <div class="ib-icon"><svg width="22" height="22" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="10" fill="rgba(34,199,122,0.15)"/><rect x="5" y="10" width="26" height="17" rx="3" stroke="#22c77a" stroke-width="1.7"/><rect x="5" y="15" width="26" height="4" fill="rgba(34,199,122,0.25)"/><rect x="8" y="22" width="6" height="2.5" rx="1" fill="#22c77a"/><circle cx="25" cy="23.25" r="2" fill="rgba(34,199,122,0.4)" stroke="#22c77a" stroke-width="1"/></svg></div>
-    <div class="ib-text"><div class="ib-title">Add Budget Tracker to Home Screen</div><div class="ib-sub" id="installSubText">Install for quick access</div></div>
-    <button class="ib-install" id="installBtn">Install</button>
-    <button class="ib-close" id="installClose">✕</button>
-  </div>
-
 
 <!-- Edit Transaction Modal -->
 <div class="modal-bg" id="editModal">
@@ -384,8 +270,8 @@ tbody tr:last-child td{border-bottom:none;}
       <span style="font-size:.72rem;color:var(--muted);">or</span>
       <div style="flex:1;height:1px;background:var(--border2);"></div>
     </div>
-    <button id="passkeyBtn" class="gbtn" style="width:100%;background:rgba(34,199,122,0.08);border:1px solid rgba(34,199,122,0.35);display:flex;align-items:center;justify-content:center;gap:8px;color:#e8edf5;" onclick="signInWithPasskey()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3H5a2 2 0 0 0-2 2v2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M17 21h2a2 2 0 0 0 2-2v-2"/><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M9.5 15a3.5 3.5 0 0 0 5 0"/><path d="M12 7v1"/></svg>
+    <button id="passkeyBtn" class="gbtn" style="width:100%;background:rgba(34,199,122,0.08);border:1px solid rgba(34,199,122,0.35);display:flex;align-items:center;justify-content:center;gap:8px;" onclick="signInWithPasskey()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M12 12v8"/><path d="M8 16h8"/><rect x="3" y="11" width="4" height="6" rx="1"/><rect x="17" y="11" width="4" height="6" rx="1"/></svg>
       <span>Sign in with Face ID / Touch ID</span>
     </button>
     <button class="gbtn ghost" style="margin-top:6px" onclick="doSignup()">Create Account</button>
@@ -436,19 +322,17 @@ tbody tr:last-child td{border-bottom:none;}
     </div>
 
     <div class="side-divider" style="margin-top:auto"></div>
-    <div style="flex-shrink:0;padding-bottom:8px;">
     <button id="notifBtn" class="side-item" onclick="toggleNotifications()" style="font-size:.75rem;color:var(--text2);border:1px solid var(--border2);border-radius:8px;margin-bottom:4px;padding:8px 10px;background:transparent;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       Enable Notifications
     </button>
     <button id="registerPasskeyBtn" class="side-item" onclick="registerPasskey()" style="font-size:.75rem;color:#22c77a;border:1px solid rgba(34,199,122,0.25);border-radius:8px;margin-bottom:4px;padding:8px 10px;background:rgba(34,199,122,0.06);">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3H5a2 2 0 0 0-2 2v2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M17 21h2a2 2 0 0 0 2-2v-2"/><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M9.5 15a3.5 3.5 0 0 0 5 0"/><path d="M12 7v1"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M12 12v4"/><path d="M9 18h6"/></svg>
       ＋ Register Face ID / Touch ID
     </button>
     <button class="side-item" onclick="doLogout()" style="margin-top:8px">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Log Out
     </button>
-    </div>
   </aside>
 
   <main class="main">
@@ -465,40 +349,28 @@ tbody tr:last-child td{border-bottom:none;}
       <!-- Intro Banner -->
       <div class="stat-row" id="statRow"></div>
       <div class="grid" id="catGrid"></div>
-      <div style="background:rgba(34,199,122,0.07);border:1px solid rgba(34,199,122,0.2);border-radius:16px;padding:20px 24px;margin-top:20px;margin-bottom:4px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span style="font-size:.85rem;font-weight:700;color:#22c77a;letter-spacing:.04em;text-transform:uppercase;">How This Budget Works</span>
+      <div id="budgetProfileBlock" style="background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px 22px;margin-top:20px;margin-bottom:4px;">
+        <!-- header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+            <span style="font-size:.82rem;font-weight:700;color:#22c77a;letter-spacing:.04em;text-transform:uppercase;">How This Budget Works</span>
+          </div>
+          <span id="activeProfileBadge" style="font-size:.68rem;font-weight:700;background:rgba(34,199,122,0.12);color:#22c77a;border:1px solid rgba(34,199,122,0.3);border-radius:999px;padding:2px 10px;"></span>
         </div>
-        <p style="font-size:.84rem;color:#c8d0e0;line-height:1.7;margin:0 0 12px;">
-          This app uses a <strong style="color:#e8edf5;">percentage-based budgeting method</strong> — your monthly income is divided into four buckets so every dollar has a purpose. Here's the default breakdown:
-        </p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px;">
-          <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 14px;">
-            <div style="font-size:1.3rem;font-weight:800;color:#22c77a;">50%</div>
-            <div style="font-size:.82rem;font-weight:700;color:#e8edf5;margin:2px 0;">Essentials</div>
-            <div style="font-size:.76rem;color:#6b7a99;">Rent, groceries, utilities, transport — the non-negotiables.</div>
-          </div>
-          <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 14px;">
-            <div style="font-size:1.3rem;font-weight:800;color:#3b82f6;">15%</div>
-            <div style="font-size:.82rem;font-weight:700;color:#e8edf5;margin:2px 0;">Growth</div>
-            <div style="font-size:.76rem;color:#6b7a99;">Investing, retirement contributions, building long-term wealth.</div>
-          </div>
-          <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 14px;">
-            <div style="font-size:1.3rem;font-weight:800;color:#8b5cf6;">25%</div>
-            <div style="font-size:.82rem;font-weight:700;color:#e8edf5;margin:2px 0;">Lifestyle</div>
-            <div style="font-size:.76rem;color:#6b7a99;">Dining, subscriptions, hobbies, entertainment — your "fun" money.</div>
-          </div>
-          <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 14px;">
-            <div style="font-size:1.3rem;font-weight:800;color:#f59e0b;">10%</div>
-            <div style="font-size:.82rem;font-weight:700;color:#e8edf5;margin:2px 0;">Savings</div>
-            <div style="font-size:.76rem;color:#6b7a99;">Emergency fund, short-term goals, rainy day reserves.</div>
-          </div>
-        </div>
-        <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:10px 14px;">
-          <span style="font-size:.78rem;color:#f59e0b;font-weight:600;">💡 Paying off debt?</span>
-          <span style="font-size:.78rem;color:#8a96b0;"> Redirect the <strong style="color:#c8d0e0;">Growth (15%)</strong> bucket toward your debt payments instead of investing. Once your debt is cleared, shift it back to building wealth. The percentages are a starting point — adjust them in the <strong style="color:#c8d0e0;">Income &amp; Budget</strong> tab to fit your situation.</span>
-        </div>
+        <p style="font-size:.79rem;color:var(--muted);line-height:1.5;margin:0 0 14px;">Your income is split into four buckets. Pick a profile below — it updates the percentages live. You can always fine-tune in <strong style="color:var(--text);">Income &amp; Budget</strong>.</p>
+
+        <!-- profile chips row -->
+        <div id="profileChips" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;"></div>
+
+        <!-- live breakdown grid — updates on profile select -->
+        <div id="profileBreakdown" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px;"></div>
+
+        <!-- tip box -->
+        <div id="profileTip" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:10px 14px;font-size:.78rem;display:none;"></div>
+
+        <!-- apply button -->
+        <button class="gbtn" style="width:100%;margin-top:14px;" onclick="applySelectedProfile()">Apply This Profile &amp; Set Budget &#8594;</button>
       </div>
 
       
@@ -577,7 +449,6 @@ tbody tr:last-child td{border-bottom:none;}
         </div>
       </div>
       <div class="grid" id="catGridFull"></div>
-      <div id="mobileCategories"></div>
     </div>
 
     <!-- ── INCOME TAB ── -->
@@ -1559,28 +1430,58 @@ async function signInWithPasskey(){
 }
 
 async function toggleNotifications(){
-  if(typeof OneSignalDeferred === 'undefined'){alert('Not available on file://');return;}
-  var btn=document.getElementById('notifBtn');
-  var on=btn&&btn.getAttribute('data-notif-on')==='1';
-  OneSignalDeferred.push(async function(OS){
-    try{
-      if(on){if(confirm('Disable notifications?')){await OS.User.PushSubscription.optOut();updateNotifBtn(false);}}
-      else{if(confirm('Enable notifications?')){var p=await OS.Notifications.permission;if(!p){await OS.Notifications.requestPermission();p=await OS.Notifications.permission;}if(p){await OS.User.PushSubscription.optIn();updateNotifBtn(true);if(currentUser)OS.User.addTag('user_id',currentUser.id);}else{alert('Notifications blocked in settings.');}}}
-    }catch(e){console.error(e);alert('Error: '+(e.message||e));}
-  });
+  var btn = document.getElementById('notifBtn');
+  if(typeof OneSignal === 'undefined'){
+    alert('Notifications not available. Make sure you are on the live site (not file://) and try again.');
+    return;
+  }
+  try {
+    var permission = await OneSignal.Notifications.permission;
+    if(permission){
+      // Already subscribed — offer to unsubscribe
+      if(confirm('Disable push notifications for Budget Tracker?')){
+        await OneSignal.User.PushSubscription.optOut();
+        updateNotifBtn(false);
+      }
+    } else {
+      // Not subscribed — request permission
+      await OneSignal.Notifications.requestPermission();
+      var granted = await OneSignal.Notifications.permission;
+      updateNotifBtn(granted);
+      if(granted){
+        // Tag user with their Supabase ID so we can target them later
+        if(currentUser) OneSignal.User.addTag('user_id', currentUser.id);
+      }
+    }
+  } catch(e) {
+    console.error('Notification error:', e);
+    alert('Could not set up notifications: ' + (e.message || e));
+  }
 }
 
 function updateNotifBtn(enabled){
-  var btn=document.getElementById('notifBtn');if(!btn)return;
-  btn.setAttribute('data-notif-on',enabled?'1':'0');
-  if(enabled){btn.style.color='#22c77a';btn.style.borderColor='rgba(34,199,122,0.4)';btn.style.background='rgba(34,199,122,0.06)';btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> Notifications On ✓';}
-  else{btn.style.color='var(--text2)';btn.style.borderColor='var(--border2)';btn.style.background='transparent';btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> Enable Notifications';}
+  var btn = document.getElementById('notifBtn');
+  if(!btn) return;
+  if(enabled){
+    btn.style.color = '#22c77a';
+    btn.style.borderColor = 'rgba(34,199,122,0.4)';
+    btn.style.background = 'rgba(34,199,122,0.06)';
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> Notifications On ✓';
+  } else {
+    btn.style.color = 'var(--text2)';
+    btn.style.borderColor = 'var(--border2)';
+    btn.style.background = 'transparent';
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> Enable Notifications';
+  }
 }
 
 // Check notification status on load and update button
 function checkNotifStatus(){
-  if(typeof OneSignalDeferred==='undefined')return;
-  OneSignalDeferred.push(async function(OS){try{var o=OS.User.PushSubscription.optedIn,p=await OS.Notifications.permission;updateNotifBtn(!!(o&&p));if(o&&p&&currentUser)OS.User.addTag('user_id',currentUser.id);}catch(e){}});
+  if(typeof OneSignal === 'undefined') return;
+  OneSignalDeferred.push(async function(OneSignal){
+    var enabled = await OneSignal.Notifications.permission;
+    updateNotifBtn(enabled);
+  });
 }
 
 async function registerPasskey(){
@@ -1665,182 +1566,227 @@ function showLogin(){
   document.querySelector('.shell').style.display = 'none';
 }
 
-// ── PWA Install ──
-var _dpe=null,_dpk='pwa_install_dismissed';
-window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_dpe=e;if(!localStorage.getItem(_dpk))_showIB('android');});
-(function(){var ios=/iphone|ipad|ipod/i.test(navigator.userAgent),sa=('standalone' in navigator)&&navigator.standalone;if(ios&&!sa&&!localStorage.getItem(_dpk))_showIB('ios');})();
-function _showIB(p){var b=document.getElementById('installBanner'),s=document.getElementById('installSubText'),i=document.getElementById('installBtn');if(!b)return;if(p==='ios'){if(s)s.textContent='Tap Share \u2192 "Add to Home Screen"';if(i)i.style.display='none';}else{if(s)s.textContent='Install for full-screen access';if(i)i.style.display='';}b.classList.add('show');}
-var _ib=document.getElementById('installBtn');if(_ib)_ib.addEventListener('click',function(){if(!_dpe)return;_dpe.prompt();_dpe.userChoice.then(function(c){if(c.outcome==='accepted'){document.getElementById('installBanner').classList.remove('show');localStorage.setItem(_dpk,'1');}_dpe=null;});});
-var _ic=document.getElementById('installClose');if(_ic)_ic.addEventListener('click',function(){document.getElementById('installBanner').classList.remove('show');localStorage.setItem(_dpk,'1');});
-window.addEventListener('appinstalled',function(){var b=document.getElementById('installBanner');if(b)b.classList.remove('show');localStorage.setItem(_dpk,'1');});
 
-// ── Bottom Nav ──
-function setActiveBottomNav(tab){
-  document.querySelectorAll('.bn-item').forEach(function(b){b.classList.remove('active');});
-  var el=document.getElementById('bn-'+tab);
-  if(el)el.classList.add('active');
-}
-function openMoreDrawer(){
-  var d=document.getElementById('moreDrawer');
-  if(d){d.classList.add('open');_renderMoreMonths();}
-  var nb=document.getElementById('notifBtn'),mb=document.getElementById('moreNotifBtn');
-  if(nb&&mb){var on=nb.getAttribute('data-notif-on')==='1';mb.style.color=on?'#22c77a':'';mb.lastChild.textContent=on?' Notifications On \u2713':' Enable Notifications';}
-}
-function closeMoreDrawer(){var d=document.getElementById('moreDrawer');if(d)d.classList.remove('open');}
-function _renderMoreMonths(){
-  var el=document.getElementById('moreMonthTabs');if(!el)return;
-  var keys=Object.keys(STATE.months),html='';
-  keys.forEach(function(k){html+='<button class="mtab'+(k===STATE.activeMonth?' active':'')+'" onclick="switchMonth(\''+k+'\');_renderMoreMonths()">'+k+'</button>';});
-  el.innerHTML=html;
-}
-
-// ── Compact Mobile Category Render ──
-function renderMobileCategories(){
-  var mc=document.getElementById('mobileCategories');
-  if(!mc||!window.matchMedia('(max-width:768px)').matches)return;
-  var d=activeData(),income=d.income||0;
-  var html='';
-  for(var c=0;c<d.bd.length;c++){
-    var cat=d.bd[c],sp=0,sub=0;
-    for(var s=0;s<cat.subs.length;s++){sp+=cat.subs[s].spent;sub+=cat.subs[s].budget;}
-    sp=Math.round(sp*100)/100;sub=Math.round(sub*100)/100;
-    var pool=cat.pool||0;
-    var remaining=Math.round((pool-sp)*100)/100;
-    var pct=pool>0?Math.min(100,Math.round(sp/pool*100)):0;
-    var over=sp>pool;
-    // Subcards
-    var subHtml='';
-    if(cat.subs.length>0){
-      // Summary row
-      subHtml+='<div class="ccard-summary">';
-      subHtml+='<div class="ccard-sum-item"><div class="ccard-sum-label">Budget</div><div class="ccard-sum-val">'+money(pool)+'</div></div>';
-      subHtml+='<div class="ccard-sum-item"><div class="ccard-sum-label">Spent</div><div class="ccard-sum-val" style="color:'+(sp>0?'#f87171':'var(--muted)')+'">'+money(sp)+'</div></div>';
-      subHtml+='<div class="ccard-sum-item"><div class="ccard-sum-label">Left</div><div class="ccard-sum-val" style="color:'+(remaining<0?'#f87171':'#22c77a')+'">'+money(remaining)+'</div></div>';
-      subHtml+='</div>';
-      for(var s=0;s<cat.subs.length;s++){
-        var sub2=cat.subs[s];
-        var sPct=sub2.budget>0?Math.min(100,Math.round(sub2.spent/sub2.budget*100)):0;
-        var sLeft=Math.round((sub2.budget-sub2.spent)*100)/100;
-        var sOver=sub2.spent>sub2.budget;
-        subHtml+='<div class="scard-edit-row">';
-        subHtml+='<input class="scard-edit-name" type="text" value="'+sub2.name.replace(/"/g,'&quot;')+'" onchange="setSubName('+c+','+s+',this.value)">';
-        subHtml+='<input class="scard-edit-budget" type="number" min="0" step="0.01" value="'+sub2.budget.toFixed(2)+'" onchange="setBudget('+c+','+s+',this.value)">';
-        subHtml+='<button class="scard-edit-del" onclick="deleteSub('+c+','+s+')" title="Delete">\u2715</button>';
-        subHtml+='</div>';
-        subHtml+='<div style="padding:0 2px 4px"><div class="scard-compact-prog"><div class="scard-compact-fill'+(sOver?' over':'')+'" style="width:'+sPct+'%"></div></div>';
-        subHtml+='<div style="display:flex;justify-content:space-between"><span style="font-size:.69rem;color:var(--muted)">'+sPct+'% spent</span><span style="font-size:.69rem;font-weight:600;color:'+(sLeft<0?'#f87171':'#22c77a')+'">'+money(sLeft)+'</span></div></div>';
-      }
-    } else {
-      subHtml+='<div style="font-size:.78rem;color:var(--muted);padding:4px 0 8px">No subcategories yet. Add one below.</div>';
-    }
-    // Quick-add presets
-    var presets=getPresets(cat.name);
-    var existingNames=cat.subs.map(function(s){return s.name.toLowerCase();});
-    var chips='';
-    for(var p=0;p<presets.length;p++){
-      var taken=existingNames.indexOf(presets[p].toLowerCase())!==-1;
-      chips+='<button class="preset-compact-chip'+(taken?' taken':'')+'"'+(taken?' disabled':'')+' onclick="quickAddSub('+c+',\''+presets[p].replace(/'/g,"\\'")+'\')" >'+presets[p]+'</button>';
-    }
-    subHtml+='<div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-top:8px;margin-bottom:4px">Quick Add</div>';
-    subHtml+='<div class="presets-compact">'+chips+'</div>';
-    subHtml+='<div class="ccard-add-row"><input class="ccard-add-inp" id="mcNewSub-'+c+'" type="text" placeholder="Custom subcategory..." onkeydown="if(event.key===\'Enter\')addSub('+c+')"><button class="ccard-add-btn" onclick="addSub('+c+')">Add</button></div>';
-
-    html+='<div class="ccard-compact" id="mcc-'+c+'">';
-    html+='<div class="ccard-row" onclick="toggleCcard('+c+')">';
-    html+='<div class="ccard-title-col"><div class="ccard-name">'+cat.name+'</div><div class="ccard-meta">'+cat.subs.length+' subcategor'+(cat.subs.length===1?'y':'ies')+'</div></div>';
-    html+='<div class="ccard-right"><div class="ccard-amt">'+money(pool)+'</div><div class="ccard-badge">'+pct+'% spent</div></div>';
-    html+='<svg class="ccard-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
-    html+='</div>';
-    html+='<div class="ccard-prog"><div class="ccard-prog-fill'+(over?' over':'')+'" style="width:'+pct+'%"></div></div>';
-    html+='<div class="ccard-body">'+subHtml+'</div>';
-    html+='</div>';
+// ═══════════════════════════════════════════════════
+// BUDGET PROFILES — live interactive section
+// ═══════════════════════════════════════════════════
+var BUDGET_PROFILES = [
+  {
+    id: 'default',
+    label: '50/15/25/10',
+    name: 'Default',
+    emoji: '📊',
+    weights: [50, 15, 25, 10],
+    tip: 'The classic starting point. Works well for most people with steady income.',
+    catColors: ['#22c77a','#3b82f6','#8b5cf6','#f59e0b'],
+    catNotes: [
+      'Rent, groceries, utilities, transport — the non-negotiables.',
+      'Investing, retirement contributions, building long-term wealth.',
+      'Dining, subscriptions, hobbies, entertainment — your fun money.',
+      'Emergency fund, short-term goals, rainy day reserves.'
+    ]
+  },
+  {
+    id: 'balanced',
+    label: '50/20/20/10',
+    name: 'Balanced',
+    emoji: '⚖️',
+    weights: [50, 20, 20, 10],
+    tip: 'More investing, slightly less lifestyle. Good if you want to grow wealth without sacrificing fun.',
+    catColors: ['#22c77a','#3b82f6','#8b5cf6','#f59e0b'],
+    catNotes: [
+      'Keep essential costs at half your income.',
+      'Stronger investing focus — 401k, index funds.',
+      'Still solid lifestyle money for dining and hobbies.',
+      'Build that emergency fund steadily.'
+    ]
+  },
+  {
+    id: 'saver',
+    label: '50/30/10/10',
+    name: 'Aggressive Saver',
+    emoji: '💰',
+    weights: [50, 30, 10, 10],
+    tip: 'Maximize wealth-building. Cut lifestyle spending to fast-track your financial goals.',
+    catColors: ['#22c77a','#3b82f6','#8b5cf6','#f59e0b'],
+    catNotes: [
+      'Essentials stay firm — no cutting here.',
+      'Heavy investing: index funds, Roth IRA, 401k.',
+      'Tight fun budget — cut where you can.',
+      'Keep a small safety cushion.'
+    ]
+  },
+  {
+    id: 'debt',
+    label: '50/30/10/10',
+    name: 'Debt Crusher',
+    emoji: '🔥',
+    weights: [50, 30, 10, 10],
+    tip: '⚡ Use the Growth (30%) bucket for debt payments, NOT investing. Once debt-free, flip it to wealth-building.',
+    catColors: ['#22c77a','#ef4444','#8b5cf6','#f59e0b'],
+    catNotes: [
+      'Cover all necessities first.',
+      'Attack debt hard — credit cards, loans, student debt.',
+      'Keep lifestyle spending very tight.',
+      'Small emergency buffer — enough to avoid new debt.'
+    ]
+  },
+  {
+    id: 'enjoy',
+    label: '40/15/35/10',
+    name: 'Enjoy Life',
+    emoji: '✨',
+    weights: [40, 15, 35, 10],
+    tip: 'Good if you live somewhere affordable or have low fixed costs. Make sure essentials truly fit in 40%.',
+    catColors: ['#22c77a','#3b82f6','#8b5cf6','#f59e0b'],
+    catNotes: [
+      'Lean on essentials — lower rent, fewer fixed costs.',
+      'Steady investing on autopilot.',
+      'More dining, travel, hobbies — enjoy it.',
+      'Keep the safety net.'
+    ]
+  },
+  {
+    id: 'highcost',
+    label: '60/15/15/10',
+    name: 'High Cost of Living',
+    emoji: '🏙️',
+    weights: [60, 15, 15, 10],
+    tip: 'Common in NYC, SF, Miami. High rent eats income — still invest what you can and keep lifestyle lean.',
+    catColors: ['#22c77a','#3b82f6','#8b5cf6','#f59e0b'],
+    catNotes: [
+      'Expensive city — rent alone may hit 30-40%.',
+      'Still invest even if it\'s just 15%.',
+      'Keep lifestyle tight given high fixed costs.',
+      'Emergency fund matters more when costs are high.'
+    ]
   }
-  mc.innerHTML=html;
-}
-function toggleCcard(c){
-  var el=document.getElementById('mcc-'+c);
-  if(el)el.classList.toggle('open');
-}
-// Patch addSub to read from mobile input too
-var __origAddSub=addSub;
-addSub=function(ci){
-  var mInp=document.getElementById('mcNewSub-'+ci);
-  var deskInp=document.getElementById('newSubName-'+ci);
-  if(mInp&&mInp.value.trim()){
-    var name=mInp.value.trim();
-    activeData().bd[ci].subs.push({name:name,budget:0,spent:0});
-    mInp.value='';
-    saveAndRender();
-    return;
+];
+
+var _activeProfileId = 'default';
+
+function renderBudgetProfiles() {
+  var chipsEl = document.getElementById('profileChips');
+  var breakdownEl = document.getElementById('profileBreakdown');
+  var tipEl = document.getElementById('profileTip');
+  var badgeEl = document.getElementById('activeProfileBadge');
+  if (!chipsEl) return;
+
+  var d = activeData();
+  var income = getIncome();
+
+  // --- chips ---
+  var chipsHtml = '';
+  for (var i = 0; i < BUDGET_PROFILES.length; i++) {
+    var p = BUDGET_PROFILES[i];
+    var sel = p.id === _activeProfileId;
+    chipsHtml += '<button onclick="selectBudgetProfile(\'' + p.id + '\')" style="'
+      + 'display:inline-flex;align-items:center;gap:5px;'
+      + 'padding:6px 12px;border-radius:999px;font-family:Inter,sans-serif;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .15s;'
+      + (sel
+        ? 'background:rgba(34,199,122,0.15);border:1.5px solid #22c77a;color:#22c77a;'
+        : 'background:transparent;border:1.5px solid var(--border2);color:var(--muted2);')
+      + '">'
+      + '<span>' + p.emoji + '</span>'
+      + '<span>' + p.name + '</span>'
+      + '</button>';
   }
-  __origAddSub(ci);
+  chipsEl.innerHTML = chipsHtml;
+
+  // --- active profile ---
+  var prof = null;
+  for (var i = 0; i < BUDGET_PROFILES.length; i++) {
+    if (BUDGET_PROFILES[i].id === _activeProfileId) { prof = BUDGET_PROFILES[i]; break; }
+  }
+  if (!prof) return;
+
+  if (badgeEl) badgeEl.textContent = prof.emoji + ' ' + prof.name;
+
+  // --- breakdown cards ---
+  var catNames = ['Essentials','Growth','Lifestyle','Savings'];
+  var bHtml = '';
+  for (var i = 0; i < 4; i++) {
+    var w = prof.weights[i];
+    var col = prof.catColors[i];
+    var dollar = income > 0 ? (' — ' + money(Math.round(income * w / 100 * 100) / 100)) : '';
+    bHtml += '<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 14px;">'
+      + '<div style="font-size:1.25rem;font-weight:800;color:' + col + ';">' + w + '%' + dollar + '</div>'
+      + '<div style="font-size:.8rem;font-weight:700;color:#e8edf5;margin:3px 0 4px;">' + catNames[i] + '</div>'
+      + '<div style="font-size:.72rem;color:#6b7a99;line-height:1.4;">' + prof.catNotes[i] + '</div>'
+      + '</div>';
+  }
+  breakdownEl.innerHTML = bHtml;
+
+  // --- tip ---
+  if (prof.tip) {
+    tipEl.innerHTML = '<span style="color:#f59e0b;font-weight:600;">' + prof.emoji + ' ' + prof.name + ': </span>'
+      + '<span style="color:#8a96b0;">' + prof.tip + '</span>';
+    tipEl.style.display = 'block';
+  } else {
+    tipEl.style.display = 'none';
+  }
+}
+
+function selectBudgetProfile(id) {
+  _activeProfileId = id;
+  // immediately update WEIGHTS so user sees the effect
+  var prof = null;
+  for (var i = 0; i < BUDGET_PROFILES.length; i++) {
+    if (BUDGET_PROFILES[i].id === id) { prof = BUDGET_PROFILES[i]; break; }
+  }
+  if (prof) {
+    WEIGHTS[0] = prof.weights[0];
+    WEIGHTS[1] = prof.weights[1];
+    WEIGHTS[2] = prof.weights[2];
+    WEIGHTS[3] = prof.weights[3];
+  }
+  renderBudgetProfiles();
+  // if income tab is open, refresh the sliders too
+  if (typeof renderWeightInputs === 'function') renderWeightInputs();
+}
+
+function applySelectedProfile() {
+  var prof = null;
+  for (var i = 0; i < BUDGET_PROFILES.length; i++) {
+    if (BUDGET_PROFILES[i].id === _activeProfileId) { prof = BUDGET_PROFILES[i]; break; }
+  }
+  if (prof) {
+    WEIGHTS[0] = prof.weights[0];
+    WEIGHTS[1] = prof.weights[1];
+    WEIGHTS[2] = prof.weights[2];
+    WEIGHTS[3] = prof.weights[3];
+  }
+  switchTab('income');
+  setTimeout(function() {
+    renderWeightInputs();
+    // toast
+    var toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#22c77a;color:#03120a;font-weight:700;font-size:.85rem;padding:10px 20px;border-radius:12px;z-index:9999;box-shadow:0 4px 20px rgba(34,199,122,.4);white-space:nowrap;';
+    toast.textContent = (prof ? prof.emoji + ' ' + prof.name : 'Profile') + ' applied! Enter your income below.';
+    document.body.appendChild(toast);
+    setTimeout(function() { toast.remove(); }, 3000);
+  }, 200);
+}
+
+// Hook into switchTab so profiles render whenever dashboard is shown
+var _origSwitchTab_profile = switchTab;
+switchTab = function(tab) {
+  _origSwitchTab_profile(tab);
+  if (tab === 'dashboard') {
+    setTimeout(renderBudgetProfiles, 50);
+  }
 };
-// Patch render to also update mobile view
-var __origRender=render;
-render=function(){
-  __origRender();
-  renderMobileCategories();
+
+// Also re-render profiles whenever income changes (so dollar amounts update live)
+var _origSaveIncomeToState = saveIncomeToState;
+saveIncomeToState = function() {
+  _origSaveIncomeToState();
+  setTimeout(renderBudgetProfiles, 50);
 };
-// Patch switchTab to update bottom nav
-var __origST=switchTab;
-switchTab=function(tab){__origST(tab);setActiveBottomNav(tab);if(tab==='categories')renderMobileCategories();};
+
+// Initial render after app loads
+setTimeout(renderBudgetProfiles, 600);
+
 </script>
-
-  <div id="bottomNav">
-    <div class="bn-bar">
-      <button class="bn-item active" id="bn-dashboard" onclick="switchTab('dashboard')">
-        <div class="bn-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
-        <span>Overview</span>
-      </button>
-      <button class="bn-item" id="bn-add-expense" onclick="switchTab('add-expense')">
-        <div class="bn-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
-        <span>Add</span>
-      </button>
-      <button class="bn-item" id="bn-transactions" onclick="switchTab('transactions')">
-        <div class="bn-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg></div>
-        <span>Expenses</span>
-      </button>
-      <button class="bn-item" id="bn-categories" onclick="switchTab('categories')">
-        <div class="bn-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-        <span>Budget</span>
-      </button>
-      <button class="bn-item" id="bn-more" onclick="openMoreDrawer()">
-        <div class="bn-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></div>
-        <span>More</span>
-      </button>
-    </div>
-  </div>
-
-  <div id="moreDrawer">
-    <div id="moreOverlay" onclick="closeMoreDrawer()"></div>
-    <div id="moreSheet">
-      <div class="more-handle"></div>
-      <div class="more-section-label">Navigate</div>
-      <button class="more-item" onclick="switchTab('income');closeMoreDrawer()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-        Income &amp; Budget
-      </button>
-      <div class="more-section-label">Period</div>
-      <div id="moreMonthTabs" style="display:flex;flex-wrap:wrap;gap:6px;padding:4px 14px 8px;"></div>
-      <button class="more-item" onclick="addMonth();closeMoreDrawer()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        New Month
-      </button>
-      <div class="more-section-label">Settings</div>
-      <button class="more-item" id="moreNotifBtn" onclick="toggleNotifications();closeMoreDrawer()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        Enable Notifications
-      </button>
-      <button class="more-item" onclick="registerPasskey();closeMoreDrawer()" style="color:#22c77a">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3H5a2 2 0 0 0-2 2v2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M17 21h2a2 2 0 0 0 2-2v-2"/><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M9.5 15a3.5 3.5 0 0 0 5 0"/><path d="M12 7v1"/></svg>
-        Register Face ID / Touch ID
-      </button>
-      <button class="more-item danger" onclick="doLogout()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fca5a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Log Out
-      </button>
-    </div>
-  </div>
-
 </body>
 </html>
