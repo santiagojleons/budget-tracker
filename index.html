@@ -349,28 +349,73 @@ tbody tr:last-child td{border-bottom:none;}
       <!-- Intro Banner -->
       <div class="stat-row" id="statRow"></div>
       <div class="grid" id="catGrid"></div>
-      <div id="budgetProfileBlock" style="background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px 22px;margin-top:20px;margin-bottom:4px;">
+      <div id="budgetProfileBlock" style="background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:22px;margin-top:20px;margin-bottom:4px;">
+
         <!-- header -->
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
           <div style="display:flex;align-items:center;gap:8px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c77a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
             <span style="font-size:.82rem;font-weight:700;color:#22c77a;letter-spacing:.04em;text-transform:uppercase;">How This Budget Works</span>
           </div>
-          <span id="activeProfileBadge" style="font-size:.68rem;font-weight:700;background:rgba(34,199,122,0.12);color:#22c77a;border:1px solid rgba(34,199,122,0.3);border-radius:999px;padding:2px 10px;"></span>
+          <span id="dashProfileBadge" style="font-size:.68rem;font-weight:700;background:rgba(34,199,122,0.12);color:#22c77a;border:1px solid rgba(34,199,122,0.3);border-radius:999px;padding:2px 10px;white-space:nowrap;display:none;"></span>
         </div>
-        <p style="font-size:.79rem;color:var(--muted);line-height:1.5;margin:0 0 14px;">Your income is split into four buckets. Pick a profile below — it updates the percentages live. You can always fine-tune in <strong style="color:var(--text);">Income &amp; Budget</strong>.</p>
+        <p style="font-size:.79rem;color:var(--muted);line-height:1.55;margin:0 0 16px;">Your income is divided into <strong style="color:var(--text);">four buckets</strong> — every dollar gets a job. Learn what each one is, then pick a profile that fits your life.</p>
 
-        <!-- profile chips row -->
-        <div id="profileChips" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;"></div>
+        <!-- category education cards — no rates, just what they ARE -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:18px;">
 
-        <!-- live breakdown grid — updates on profile select -->
-        <div id="profileBreakdown" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px;"></div>
+          <div style="background:rgba(34,199,122,0.07);border:1px solid rgba(34,199,122,0.18);border-radius:12px;padding:14px;">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">
+              <span style="font-size:1.1rem;">🏠</span>
+              <span style="font-size:.86rem;font-weight:700;color:#22c77a;">Essentials</span>
+            </div>
+            <p style="font-size:.76rem;color:var(--muted);line-height:1.55;margin:0;">The non-negotiables — rent, groceries, utilities, insurance, transport. If you stopped paying these, life gets difficult fast.</p>
+          </div>
 
-        <!-- tip box -->
-        <div id="profileTip" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:10px 14px;font-size:.78rem;display:none;"></div>
+          <div style="background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.18);border-radius:12px;padding:14px;">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">
+              <span style="font-size:1.1rem;">📈</span>
+              <span style="font-size:.86rem;font-weight:700;color:#3b82f6;">Growth</span>
+            </div>
+            <p style="font-size:.76rem;color:var(--muted);line-height:1.55;margin:0;">Money working for future you — investing, retirement accounts (401k, Roth IRA), index funds. Also where debt payments go if you're paying off loans.</p>
+          </div>
 
-        <!-- apply button -->
-        <button class="gbtn" style="width:100%;margin-top:14px;" onclick="applySelectedProfile()">Apply This Profile &amp; Set Budget &#8594;</button>
+          <div style="background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.18);border-radius:12px;padding:14px;">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">
+              <span style="font-size:1.1rem;">🎉</span>
+              <span style="font-size:.86rem;font-weight:700;color:#8b5cf6;">Lifestyle</span>
+            </div>
+            <p style="font-size:.76rem;color:var(--muted);line-height:1.55;margin:0;">Your quality-of-life spending — dining out, hobbies, subscriptions, travel, entertainment. Important to have, but the first place to trim if needed.</p>
+          </div>
+
+          <div style="background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.18);border-radius:12px;padding:14px;">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">
+              <span style="font-size:1.1rem;">🛡️</span>
+              <span style="font-size:.86rem;font-weight:700;color:#f59e0b;">Savings</span>
+            </div>
+            <p style="font-size:.76rem;color:var(--muted);line-height:1.55;margin:0;">Your safety net and short-term goals — emergency fund, vacation fund, car fund, down payment. Keeps unexpected expenses from derailing your budget.</p>
+          </div>
+
+        </div>
+
+        <!-- divider -->
+        <div style="height:1px;background:var(--border);margin-bottom:16px;"></div>
+
+        <!-- profile picker heading -->
+        <div style="font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;">Choose a Profile — sets the split between buckets</div>
+
+        <!-- profile chips -->
+        <div id="dashProfileChips" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;"></div>
+
+        <!-- live breakdown (shows after profile selected) -->
+        <div id="dashProfileBreakdown" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px;"></div>
+
+        <!-- tip -->
+        <div id="dashProfileTip" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:10px 14px;font-size:.78rem;display:none;margin-bottom:12px;"></div>
+
+        <!-- CTA -->
+        <button class="gbtn" style="width:100%;margin-top:4px;" onclick="applySelectedProfile()">Apply This Profile &amp; Set Budget &#8594;</button>
+
       </div>
 
       
@@ -485,19 +530,15 @@ tbody tr:last-child td{border-bottom:none;}
 
         <!-- WEIGHTS CARD -->
         <div class="card">
-          <div class="card-title">📊 Category Allocations</div>
-          <p style="font-size:.78rem;color:var(--muted);margin-bottom:12px;">Choose a preset or enter custom percentages. Must total 100%.</p>
-
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-            <button class="gbtn ghost" style="font-size:.75rem;padding:5px 12px;" onclick="applyPreset(50,15,25,10)">50/15/25/10<br><span style="color:var(--muted);font-size:.68rem;">Default</span></button>
-            <button class="gbtn ghost" style="font-size:.75rem;padding:5px 12px;" onclick="applyPreset(50,20,20,10)">50/20/20/10<br><span style="color:var(--muted);font-size:.68rem;">Balanced</span></button>
-            <button class="gbtn ghost" style="font-size:.75rem;padding:5px 12px;" onclick="applyPreset(50,30,10,10)">50/30/10/10<br><span style="color:var(--muted);font-size:.68rem;">Growth</span></button>
-            <button class="gbtn ghost" style="font-size:.75rem;padding:5px 12px;" onclick="applyPreset(60,10,20,10)">60/10/20/10<br><span style="color:var(--muted);font-size:.68rem;">High Essentials</span></button>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+            <div class="card-title" style="margin-bottom:0;">📊 Category Allocations</div>
+            <span id="incomeProfileBadge" style="font-size:.68rem;font-weight:700;background:rgba(34,199,122,0.12);color:#22c77a;border:1px solid rgba(34,199,122,0.3);border-radius:999px;padding:2px 10px;white-space:nowrap;display:none;"></span>
           </div>
-
-          <div id="weightInputs" style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;"></div>
-          <div id="weightTotal" style="font-size:.82rem;font-weight:700;color:#22c77a;margin-bottom:16px;">Total: 100% ✅</div>
-          <button class="gbtn" style="width:100%;" onclick="applyTargetsNew()">Apply</button>
+          <p style="font-size:.78rem;color:var(--muted);margin-bottom:12px;margin-top:6px;">Select a profile or enter custom percentages. Must total 100%.</p>
+          <div id="incomeProfileChips" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;"></div>
+          <div id="weightInputs" style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px"></div>
+          <div id="weightTotal" style="font-size:.82rem;font-weight:700;color:#22c77a;margin-bottom:16px">Total: 100%</div>
+          <button class="gbtn" style="width:100%" onclick="applyTargetsNew()">Apply</button>
         </div>
 
         <!-- OVERVIEW -->
@@ -1566,226 +1607,165 @@ function showLogin(){
   document.querySelector('.shell').style.display = 'none';
 }
 
-
-// ═══════════════════════════════════════════════════
-// BUDGET PROFILES — live interactive section
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// BUDGET PROFILES — synced across Dashboard & Income tab
+// ═══════════════════════════════════════════════════════════
 var BUDGET_PROFILES = [
   {
-    id: 'default',
-    label: '50/15/25/10',
-    name: 'Default',
-    emoji: '📊',
-    weights: [50, 15, 25, 10],
-    tip: 'The classic starting point. Works well for most people with steady income.',
-    catColors: ['#22c77a','#3b82f6','#8b5cf6','#f59e0b'],
-    catNotes: [
-      'Rent, groceries, utilities, transport — the non-negotiables.',
-      'Investing, retirement contributions, building long-term wealth.',
-      'Dining, subscriptions, hobbies, entertainment — your fun money.',
-      'Emergency fund, short-term goals, rainy day reserves.'
-    ]
+    id:'default', emoji:'📊', name:'Default', label:'50/15/25/10', weights:[50,15,25,10],
+    tip:'The classic 50/15/25/10 split. A solid starting point for most people with steady income.',
+    catColors:['#22c77a','#3b82f6','#8b5cf6','#f59e0b']
   },
   {
-    id: 'balanced',
-    label: '50/20/20/10',
-    name: 'Balanced',
-    emoji: '⚖️',
-    weights: [50, 20, 20, 10],
-    tip: 'More investing, slightly less lifestyle. Good if you want to grow wealth without sacrificing fun.',
-    catColors: ['#22c77a','#3b82f6','#8b5cf6','#f59e0b'],
-    catNotes: [
-      'Keep essential costs at half your income.',
-      'Stronger investing focus — 401k, index funds.',
-      'Still solid lifestyle money for dining and hobbies.',
-      'Build that emergency fund steadily.'
-    ]
+    id:'balanced', emoji:'⚖️', name:'Balanced', label:'50/20/20/10', weights:[50,20,20,10],
+    tip:'More investing, slightly less lifestyle. Great if you want to grow wealth without sacrificing fun.',
+    catColors:['#22c77a','#3b82f6','#8b5cf6','#f59e0b']
   },
   {
-    id: 'saver',
-    label: '50/30/10/10',
-    name: 'Aggressive Saver',
-    emoji: '💰',
-    weights: [50, 30, 10, 10],
-    tip: 'Maximize wealth-building. Cut lifestyle spending to fast-track your financial goals.',
-    catColors: ['#22c77a','#3b82f6','#8b5cf6','#f59e0b'],
-    catNotes: [
-      'Essentials stay firm — no cutting here.',
-      'Heavy investing: index funds, Roth IRA, 401k.',
-      'Tight fun budget — cut where you can.',
-      'Keep a small safety cushion.'
-    ]
+    id:'saver', emoji:'💰', name:'Aggressive Saver', label:'50/30/10/10', weights:[50,30,10,10],
+    tip:'Maximize wealth-building. Cut lifestyle spending to fast-track your financial goals.',
+    catColors:['#22c77a','#3b82f6','#8b5cf6','#f59e0b']
   },
   {
-    id: 'debt',
-    label: '50/30/10/10',
-    name: 'Debt Crusher',
-    emoji: '🔥',
-    weights: [50, 30, 10, 10],
-    tip: '⚡ Use the Growth (30%) bucket for debt payments, NOT investing. Once debt-free, flip it to wealth-building.',
-    catColors: ['#22c77a','#ef4444','#8b5cf6','#f59e0b'],
-    catNotes: [
-      'Cover all necessities first.',
-      'Attack debt hard — credit cards, loans, student debt.',
-      'Keep lifestyle spending very tight.',
-      'Small emergency buffer — enough to avoid new debt.'
-    ]
+    id:'debt', emoji:'🔥', name:'Debt Crusher', label:'50/30/10/10', weights:[50,30,10,10],
+    tip:'⚡ Use the Growth bucket for debt payments, NOT investing. Once debt-free, flip it to wealth-building.',
+    catColors:['#22c77a','#ef4444','#8b5cf6','#f59e0b']
   },
   {
-    id: 'enjoy',
-    label: '40/15/35/10',
-    name: 'Enjoy Life',
-    emoji: '✨',
-    weights: [40, 15, 35, 10],
-    tip: 'Good if you live somewhere affordable or have low fixed costs. Make sure essentials truly fit in 40%.',
-    catColors: ['#22c77a','#3b82f6','#8b5cf6','#f59e0b'],
-    catNotes: [
-      'Lean on essentials — lower rent, fewer fixed costs.',
-      'Steady investing on autopilot.',
-      'More dining, travel, hobbies — enjoy it.',
-      'Keep the safety net.'
-    ]
+    id:'enjoy', emoji:'✨', name:'Enjoy Life', label:'40/15/35/10', weights:[40,15,35,10],
+    tip:'Good if you live somewhere affordable. Make sure your essentials truly fit in 40%.',
+    catColors:['#22c77a','#3b82f6','#8b5cf6','#f59e0b']
   },
   {
-    id: 'highcost',
-    label: '60/15/15/10',
-    name: 'High Cost of Living',
-    emoji: '🏙️',
-    weights: [60, 15, 15, 10],
-    tip: 'Common in NYC, SF, Miami. High rent eats income — still invest what you can and keep lifestyle lean.',
-    catColors: ['#22c77a','#3b82f6','#8b5cf6','#f59e0b'],
-    catNotes: [
-      'Expensive city — rent alone may hit 30-40%.',
-      'Still invest even if it\'s just 15%.',
-      'Keep lifestyle tight given high fixed costs.',
-      'Emergency fund matters more when costs are high.'
-    ]
+    id:'highcost', emoji:'🏙️', name:'High Cost of Living', label:'60/15/15/10', weights:[60,15,15,10],
+    tip:'Common in NYC, SF, Miami. High rent eats income — still invest what you can.',
+    catColors:['#22c77a','#3b82f6','#8b5cf6','#f59e0b']
+  },
+  {
+    id:'custom', emoji:'🎛️', name:'Custom', label:'Custom', weights:null,
+    tip:'Set your own split using the sliders below.',
+    catColors:['#22c77a','#3b82f6','#8b5cf6','#f59e0b']
   }
 ];
 
 var _activeProfileId = 'default';
 
-function renderBudgetProfiles() {
-  var chipsEl = document.getElementById('profileChips');
-  var breakdownEl = document.getElementById('profileBreakdown');
-  var tipEl = document.getElementById('profileTip');
-  var badgeEl = document.getElementById('activeProfileBadge');
-  if (!chipsEl) return;
+function _getActiveProfile() {
+  for (var i = 0; i < BUDGET_PROFILES.length; i++) {
+    if (BUDGET_PROFILES[i].id === _activeProfileId) return BUDGET_PROFILES[i];
+  }
+  return BUDGET_PROFILES[0];
+}
 
-  var d = activeData();
-  var income = getIncome();
-
-  // --- chips ---
-  var chipsHtml = '';
+function _renderChips(containerId) {
+  var el = document.getElementById(containerId);
+  if (!el) return;
+  var html = '';
   for (var i = 0; i < BUDGET_PROFILES.length; i++) {
     var p = BUDGET_PROFILES[i];
     var sel = p.id === _activeProfileId;
-    chipsHtml += '<button onclick="selectBudgetProfile(\'' + p.id + '\')" style="'
-      + 'display:inline-flex;align-items:center;gap:5px;'
-      + 'padding:6px 12px;border-radius:999px;font-family:Inter,sans-serif;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .15s;'
+    html += '<button onclick="selectBudgetProfile(\'' + p.id + '\')" style="'
+      + 'display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:999px;'
+      + 'font-family:Inter,sans-serif;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .15s;border-style:solid;border-width:1.5px;'
       + (sel
-        ? 'background:rgba(34,199,122,0.15);border:1.5px solid #22c77a;color:#22c77a;'
-        : 'background:transparent;border:1.5px solid var(--border2);color:var(--muted2);')
-      + '">'
-      + '<span>' + p.emoji + '</span>'
-      + '<span>' + p.name + '</span>'
-      + '</button>';
+          ? 'background:rgba(34,199,122,0.15);border-color:#22c77a;color:#22c77a;'
+          : 'background:transparent;border-color:var(--border2);color:var(--muted2);')
+      + '">' + p.emoji + ' ' + p.name + '</button>';
   }
-  chipsEl.innerHTML = chipsHtml;
+  el.innerHTML = html;
+}
 
-  // --- active profile ---
-  var prof = null;
-  for (var i = 0; i < BUDGET_PROFILES.length; i++) {
-    if (BUDGET_PROFILES[i].id === _activeProfileId) { prof = BUDGET_PROFILES[i]; break; }
+function _renderBreakdown(containerId) {
+  var el = document.getElementById(containerId);
+  if (!el) return;
+  var p = _getActiveProfile();
+  var d = activeData();
+  var income = getIncome();
+  if (!p || !p.weights) {
+    el.innerHTML = '<p style="font-size:.8rem;color:var(--muted);margin:0;">Set your custom split using the sliders below.</p>';
+    return;
   }
-  if (!prof) return;
-
-  if (badgeEl) badgeEl.textContent = prof.emoji + ' ' + prof.name;
-
-  // --- breakdown cards ---
-  var catNames = ['Essentials','Growth','Lifestyle','Savings'];
-  var bHtml = '';
+  var catFallback = ['Essentials','Growth','Lifestyle','Savings'];
+  var html = '';
   for (var i = 0; i < 4; i++) {
-    var w = prof.weights[i];
-    var col = prof.catColors[i];
-    var dollar = income > 0 ? (' — ' + money(Math.round(income * w / 100 * 100) / 100)) : '';
-    bHtml += '<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 14px;">'
-      + '<div style="font-size:1.25rem;font-weight:800;color:' + col + ';">' + w + '%' + dollar + '</div>'
-      + '<div style="font-size:.8rem;font-weight:700;color:#e8edf5;margin:3px 0 4px;">' + catNames[i] + '</div>'
-      + '<div style="font-size:.72rem;color:#6b7a99;line-height:1.4;">' + prof.catNotes[i] + '</div>'
+    var w = p.weights[i];
+    var col = p.catColors[i];
+    var catName = (d && d.bd && d.bd[i]) ? d.bd[i].name : catFallback[i];
+    var dollar = income > 0 ? ('<span style="font-size:.76rem;color:var(--muted);font-weight:400;"> — ' + money(Math.round(income * w / 100 * 100) / 100) + '</span>') : '';
+    html += '<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 14px;">'
+      + '<div style="font-size:1.15rem;font-weight:800;color:' + col + ';">' + w + '%' + dollar + '</div>'
+      + '<div style="font-size:.82rem;font-weight:700;color:#e8edf5;margin:3px 0 0;">' + catName + '</div>'
       + '</div>';
   }
-  breakdownEl.innerHTML = bHtml;
+  el.innerHTML = html;
+}
 
-  // --- tip ---
-  if (prof.tip) {
-    tipEl.innerHTML = '<span style="color:#f59e0b;font-weight:600;">' + prof.emoji + ' ' + prof.name + ': </span>'
-      + '<span style="color:#8a96b0;">' + prof.tip + '</span>';
-    tipEl.style.display = 'block';
-  } else {
-    tipEl.style.display = 'none';
+function renderDashboardProfiles() {
+  var p = _getActiveProfile();
+  _renderChips('dashProfileChips');
+  _renderBreakdown('dashProfileBreakdown');
+  var tipEl = document.getElementById('dashProfileTip');
+  if (tipEl) {
+    if (p && p.tip) {
+      tipEl.innerHTML = '<span style="color:#f59e0b;font-weight:600;">' + p.emoji + ' ' + p.name + ': </span><span style="color:#8a96b0;">' + p.tip + '</span>';
+      tipEl.style.display = 'block';
+    } else { tipEl.style.display = 'none'; }
   }
+  var badge = document.getElementById('dashProfileBadge');
+  if (badge) { badge.textContent = p ? (p.emoji + ' ' + p.name) : ''; badge.style.display = p ? 'inline' : 'none'; }
+}
+
+function renderIncomeProfiles() {
+  _renderChips('incomeProfileChips');
+  var badge = document.getElementById('incomeProfileBadge');
+  var p = _getActiveProfile();
+  if (badge) { badge.textContent = p ? (p.emoji + ' ' + p.name) : ''; badge.style.display = p ? 'inline' : 'none'; }
 }
 
 function selectBudgetProfile(id) {
   _activeProfileId = id;
-  // immediately update WEIGHTS so user sees the effect
-  var prof = null;
-  for (var i = 0; i < BUDGET_PROFILES.length; i++) {
-    if (BUDGET_PROFILES[i].id === id) { prof = BUDGET_PROFILES[i]; break; }
+  var p = _getActiveProfile();
+  if (p && p.weights) {
+    WEIGHTS[0] = p.weights[0]; WEIGHTS[1] = p.weights[1];
+    WEIGHTS[2] = p.weights[2]; WEIGHTS[3] = p.weights[3];
   }
-  if (prof) {
-    WEIGHTS[0] = prof.weights[0];
-    WEIGHTS[1] = prof.weights[1];
-    WEIGHTS[2] = prof.weights[2];
-    WEIGHTS[3] = prof.weights[3];
-  }
-  renderBudgetProfiles();
-  // if income tab is open, refresh the sliders too
+  renderDashboardProfiles();
+  renderIncomeProfiles();
   if (typeof renderWeightInputs === 'function') renderWeightInputs();
 }
 
 function applySelectedProfile() {
-  var prof = null;
-  for (var i = 0; i < BUDGET_PROFILES.length; i++) {
-    if (BUDGET_PROFILES[i].id === _activeProfileId) { prof = BUDGET_PROFILES[i]; break; }
-  }
-  if (prof) {
-    WEIGHTS[0] = prof.weights[0];
-    WEIGHTS[1] = prof.weights[1];
-    WEIGHTS[2] = prof.weights[2];
-    WEIGHTS[3] = prof.weights[3];
+  var p = _getActiveProfile();
+  if (p && p.weights) {
+    WEIGHTS[0] = p.weights[0]; WEIGHTS[1] = p.weights[1];
+    WEIGHTS[2] = p.weights[2]; WEIGHTS[3] = p.weights[3];
   }
   switchTab('income');
   setTimeout(function() {
     renderWeightInputs();
-    // toast
+    renderIncomeProfiles();
     var toast = document.createElement('div');
-    toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#22c77a;color:#03120a;font-weight:700;font-size:.85rem;padding:10px 20px;border-radius:12px;z-index:9999;box-shadow:0 4px 20px rgba(34,199,122,.4);white-space:nowrap;';
-    toast.textContent = (prof ? prof.emoji + ' ' + prof.name : 'Profile') + ' applied! Enter your income below.';
+    toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#22c77a;color:#03120a;font-weight:700;font-size:.85rem;padding:10px 20px;border-radius:12px;z-index:9999;box-shadow:0 4px 20px rgba(34,199,122,.4);white-space:nowrap;pointer-events:none;';
+    toast.textContent = (p ? p.emoji + ' ' + p.name : 'Profile') + ' applied! Enter your income below.';
     document.body.appendChild(toast);
-    setTimeout(function() { toast.remove(); }, 3000);
-  }, 200);
+    setTimeout(function() { if (toast.parentNode) toast.remove(); }, 3000);
+  }, 150);
 }
 
-// Hook into switchTab so profiles render whenever dashboard is shown
-var _origSwitchTab_profile = switchTab;
+var _origST_prof = switchTab;
 switchTab = function(tab) {
-  _origSwitchTab_profile(tab);
-  if (tab === 'dashboard') {
-    setTimeout(renderBudgetProfiles, 50);
-  }
+  _origST_prof(tab);
+  if (tab === 'dashboard') setTimeout(renderDashboardProfiles, 60);
+  if (tab === 'income')    setTimeout(renderIncomeProfiles, 60);
 };
 
-// Also re-render profiles whenever income changes (so dollar amounts update live)
-var _origSaveIncomeToState = saveIncomeToState;
+var _origSITS_prof = saveIncomeToState;
 saveIncomeToState = function() {
-  _origSaveIncomeToState();
-  setTimeout(renderBudgetProfiles, 50);
+  _origSITS_prof();
+  setTimeout(renderDashboardProfiles, 60);
 };
 
-// Initial render after app loads
-setTimeout(renderBudgetProfiles, 600);
+setTimeout(function() { renderDashboardProfiles(); renderIncomeProfiles(); }, 700);
 
 </script>
 </body>
