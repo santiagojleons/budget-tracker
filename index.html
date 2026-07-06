@@ -68,6 +68,13 @@ table{border-collapse:collapse;width:100%}
 .side-item.danger-item:hover{color:rgba(255,90,90,1);background:rgba(255,80,80,.07)}
 .side-divider{height:1px;background:var(--ln2);margin:5px 0}
 .month-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:2px 0}
+.month-tabs-mobile{display:none}
+@media(max-width:860px){
+  .month-tabs-mobile{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0 4px;margin-bottom:4px;scrollbar-width:none}
+  .month-tabs-mobile::-webkit-scrollbar{display:none}
+  .month-tabs-mobile .mtab{flex-shrink:0;white-space:nowrap}
+}
+
 .mtab-wrap{display:inline-flex;align-items:center;gap:1px}
 .mtab-del{background:transparent;border:none;color:var(--t3);cursor:pointer;font-size:9px;padding:2px 3px;border-radius:4px}
 .mtab-del:hover{color:var(--t1);background:rgba(255,255,255,.08)}
@@ -318,6 +325,7 @@ tbody tr:last-child td{border-bottom:none}
           <p class="tab-sub" style="font-size:.9rem;margin-top:4px;">Here's an overview of your finances &mdash; <span id="dashMonthLabel" style="color:rgba(255,255,255,0.85);font-weight:600;"></span></p>
         </div>
       </div>
+      <div class="month-tabs-mobile" id="monthTabsMobile"></div>
 
       <!-- Intro Banner -->
       <div class="stat-row" id="statRow"></div>
@@ -405,10 +413,11 @@ tbody tr:last-child td{border-bottom:none}
       <div class="tab-header">
         <div>
           <h2 class="tab-title">Transactions</h2>
-          <p class="tab-sub">All recorded expenses for this month</p>
+          <p class="tab-sub">All recorded expenses for <span id="txMonthLabel">this month</span></p>
         </div>
         <button class="gbtn sm" style="margin-top:0" onclick="switchTab('add-expense')">+ Add Expense</button>
       </div>
+      <div class="month-tabs-mobile" id="monthTabsMobileTx"></div>
       <div class="card">
         <div class="tx-table-wrap"><table><thead><tr><th>Name</th><th>Category</th><th>Subcategory</th><th>Date</th><th>Amount</th><th></th></tr></thead><tbody id="txBody"></tbody></table></div><div class="tx-cards" id="txCards"></div>
       </div>
@@ -714,34 +723,36 @@ function loadMonthIntoUI(){
 
 function renderMonthTabs(){
   var keys = Object.keys(STATE.months);
-  var el = $id('monthTabs');
-  el.innerHTML = '';
-  for(var i=0;i<keys.length;i++){
-    (function(k){
-      var wrap = document.createElement('div');
-      wrap.className = 'mtab-wrap';
+  var containers = [$id('monthTabs'), $id('monthTabsMobile'), $id('monthTabsMobileTx')].filter(Boolean);
+  containers.forEach(function(el){
+    el.innerHTML = '';
+    for(var i=0;i<keys.length;i++){
+      (function(k){
+        var wrap = document.createElement('div');
+        wrap.className = 'mtab-wrap';
 
-      var btn = document.createElement('button');
-      btn.className = 'mtab' + (k===STATE.activeMonth ? ' active' : '');
-      btn.textContent = k;
-      btn.onclick = function(){ switchMonth(k); };
-      wrap.appendChild(btn);
+        var btn = document.createElement('button');
+        btn.className = 'mtab' + (k===STATE.activeMonth ? ' active' : '');
+        btn.textContent = k;
+        btn.onclick = function(){ switchMonth(k); };
+        wrap.appendChild(btn);
 
-      if(keys.length > 1){
-        var del = document.createElement('button');
-        del.className = 'mtab-del';
-        del.title = 'Delete month';
-        del.innerHTML = '&#10005;';
-        del.onclick = function(e){
-          e.stopPropagation();
-          deleteMonth(k);
-        };
-        wrap.appendChild(del);
-      }
+        if(keys.length > 1){
+          var del = document.createElement('button');
+          del.className = 'mtab-del';
+          del.title = 'Delete month';
+          del.innerHTML = '&#10005;';
+          del.onclick = function(e){
+            e.stopPropagation();
+            deleteMonth(k);
+          };
+          wrap.appendChild(del);
+        }
 
-      el.appendChild(wrap);
-    })(keys[i]);
-  }
+        el.appendChild(wrap);
+      })(keys[i]);
+    }
+  });
 }
 
 function deleteMonth(key){
@@ -1149,6 +1160,8 @@ function render(){
   var base=income>0?income:(assigned||1);
 
   renderMonthTabs();
+  var _txLbl = document.getElementById('txMonthLabel');
+  if(_txLbl) _txLbl.textContent = STATE.activeMonth;
 
   // OVERVIEW
   var ov="";
