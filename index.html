@@ -40,53 +40,22 @@
   --font:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;
   --ease:cubic-bezier(.16,1,.3,1);
 }
-
-/* ── GLOBAL RESET & OVERFLOW FIX ─────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
-  /* Absolute ban on horizontal scroll at root level */
-  overflow-x:hidden;
-  max-width:100vw;
-}
-body{
-  font-family:var(--font);color:var(--t1);
-  min-height:100dvh;line-height:1.5;
-  background:radial-gradient(ellipse 120% 55% at 50% 0%,#1c1c1e 0%,#0f0f10 62%) fixed;
-}
-/* Every element respects viewport width */
-img,video,table,input,select,textarea,button{max-width:100%}
+html,body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;max-width:100vw;}
+body{font-family:var(--font);color:var(--t1);min-height:100dvh;line-height:1.5;background:radial-gradient(ellipse 120% 55% at 50% 0%,#1c1c1e 0%,#0f0f10 62%) fixed;}
+*{box-sizing:border-box}
+img,video{display:block;max-width:100%}
 button{cursor:pointer;border:none;background:none;font-family:var(--font);color:inherit}
-input,select,textarea{font-family:var(--font);color:inherit;min-width:0}
+input,select,textarea{font-family:var(--font);color:inherit;max-width:100%}
 table{border-collapse:collapse;width:100%}
-
-/* ── LOADER ──────────────────────────────────────────── */
 #appLoader{position:fixed;inset:0;background:#0f0f10;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
 #appLoader .spin{width:26px;height:26px;border:2px solid rgba(255,255,255,.1);border-top-color:rgba(255,255,255,.65);border-radius:50%;animation:spin .7s linear infinite}
 #appLoader p{color:var(--t2);font-size:.78rem}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── DESKTOP SHELL ───────────────────────────────────── */
-.shell{display:grid;grid-template-columns:252px 1fr;min-height:100dvh;overflow-x:hidden}
-.side{
-  background:rgba(28,28,30,.97);
-  background-image:linear-gradient(180deg,rgba(255,255,255,.025) 0%,transparent 40%);
-  border-right:1px solid var(--ln2);
-  padding:20px 12px;display:flex;flex-direction:column;gap:2px;
-  overflow-y:auto;overflow-x:hidden;
-  position:sticky;top:0;height:100dvh;width:252px;
-}
-.main{
-  /* Safe-area-aware top padding — all tabs globally */
-  padding:calc(env(safe-area-inset-top) + 28px) 28px 40px;
-  display:flex;flex-direction:column;gap:24px;
-  overflow-x:hidden;
-  /* No horizontal bleed from children */
-  min-width:0;
-}
-
-/* ── SIDEBAR ─────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:252px 1fr;min-height:100dvh;overflow-x:hidden;width:100%}
+.side{background:rgba(28,28,30,.97);background-image:linear-gradient(180deg,rgba(255,255,255,.025) 0%,transparent 40%);border-right:1px solid var(--ln2);padding:20px 12px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;overflow-x:hidden;position:sticky;top:0;height:100dvh;width:252px;}
+.main{padding:calc(env(safe-area-inset-top) + 28px) 28px 40px;display:flex;flex-direction:column;gap:24px;overflow-x:hidden;min-width:0;width:100%;}
 .side-logo{display:flex;align-items:center;gap:10px;padding:4px 8px 18px}
 .side-logo h1{font-size:.9rem;font-weight:700;color:var(--t1);letter-spacing:-.01em}
 .side-section-label{font-size:.6rem;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;padding:12px 10px 5px;font-weight:600}
@@ -98,7 +67,6 @@ table{border-collapse:collapse;width:100%}
 .side-item.danger-item{color:rgba(255,80,80,.75)}
 .side-item.danger-item:hover{color:rgba(255,90,90,1);background:rgba(255,80,80,.07)}
 .side-divider{height:1px;background:var(--ln2);margin:5px 0}
-
 .month-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:2px 0}
 .mtab-wrap{display:inline-flex;align-items:center;gap:1px}
 .mtab-del{background:transparent;border:none;color:var(--t3);cursor:pointer;font-size:9px;padding:2px 3px;border-radius:4px}
@@ -107,21 +75,12 @@ table{border-collapse:collapse;width:100%}
 .mtab:hover{border-color:var(--ln3);color:var(--t1)}
 .mtab.active{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:var(--t1);font-weight:700}
 
-/* ── TAB PANELS ──────────────────────────────────────── */
-.tab-panel{display:flex;flex-direction:column;gap:22px;min-width:0;width:100%}
+.tab-panel{display:flex;flex-direction:column;gap:22px;width:100%;min-width:0}
 .tab-header{display:flex;justify-content:space-between;align-items:flex-start;width:100%}
-
-/* Apple Large Title — solid white, heavy, left-aligned */
-.tab-title{
-  font-size:2.1rem;font-weight:800;
-  color:#ffffff !important;-webkit-text-fill-color:#ffffff;
-  letter-spacing:-.03em;line-height:1.1;text-align:left;
-}
-.tab-sub{font-size:.82rem;color:var(--t4);margin-top:4px;text-align:left}
-
-/* ── STAT ROW ────────────────────────────────────────── */
+.tab-title{font-size:2.1rem;font-weight:800;color:#ffffff!important;-webkit-text-fill-color:#ffffff;letter-spacing:-.03em;line-height:1.1;text-align:left}
+.tab-sub{font-size:.82rem;color:var(--t4);margin-top:4px}
 .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--ln2);border-radius:var(--r-md);overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.04);width:100%}
-.stat-card{background:var(--s1);padding:18px 20px;position:relative;overflow:hidden;min-width:0}
+.stat-card{background:var(--s1);padding:18px 20px;position:relative;overflow:hidden}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:rgba(255,255,255,.08)}
 .stat-card[data-bucket="growth"]::before{background:var(--c-growth);opacity:.6}
 .stat-card[data-bucket="lifestyle"]::before{background:var(--c-lifestyle);opacity:.6}
@@ -132,16 +91,13 @@ table{border-collapse:collapse;width:100%}
 .stat-val.muted{color:rgba(255,255,255,.5)}
 .stat-sub{font-size:.7rem;color:var(--t4);margin-top:5px}
 .status-pill{display:inline-block;padding:4px 10px;font-size:12px;font-weight:600;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:var(--t2);white-space:nowrap;letter-spacing:-.01em}
-
-/* ── BUDGET ROWS / GRID ──────────────────────────────── */
 .brow{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--ln2)}
 .brow:last-child{border-bottom:none}
 .bname{font-weight:600;font-size:.88rem;color:var(--t1)}
 .bpct{font-size:.64rem;color:var(--t2);background:rgba(255,255,255,.06);border-radius:999px;padding:2px 7px;margin-left:6px;border:1px solid var(--ln2)}
 .blbl{color:var(--t4);font-size:.72rem;margin-top:2px}
-
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--ln2);border-radius:var(--r-md);overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.04);width:100%}
-.ccard{background:var(--s1);padding:18px;transition:background .2s;min-width:0}
+.ccard{background:var(--s1);padding:18px;transition:background .2s}
 .ccard:hover{background:#222224}
 .chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .chead h3{font-size:.9rem;font-weight:700;color:var(--t1)}
@@ -156,7 +112,6 @@ table{border-collapse:collapse;width:100%}
 .cat-target-amt{font-size:.7rem;font-weight:700;color:var(--t1)}
 .cat-target-amt.over{color:var(--t2)}
 
-/* ── SUBCATEGORY CARDS ───────────────────────────────── */
 .scard{background:var(--s2);border:1px solid var(--ln2);border-radius:10px;padding:11px;margin-top:8px;transition:border-color .15s}
 .scard:hover{border-color:var(--ln3)}
 .scard-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;gap:6px}
@@ -166,7 +121,7 @@ table{border-collapse:collapse;width:100%}
 .budget-inp{display:block;width:100%;background:#18181a;border:1px solid var(--ln2);border-radius:10px;color:var(--t1);padding:7px 9px;font-size:.82rem;margin-bottom:5px;outline:none;font-family:var(--font);transition:border-color .15s}
 .budget-inp:focus{border-color:var(--ln3);box-shadow:0 0 0 3px rgba(255,255,255,.04)}
 .add-sub-row{display:flex;gap:7px;margin-top:10px;align-items:center}
-.add-sub-inp{flex:1;background:var(--s2);border:1px solid var(--ln2);border-radius:10px;color:var(--t1);padding:7px 9px;font-size:.8rem;outline:none;font-family:var(--font);min-width:0;transition:border-color .15s}
+.add-sub-inp{flex:1;background:var(--s2);border:1px solid var(--ln2);border-radius:10px;color:var(--t1);padding:7px 9px;font-size:.8rem;outline:none;font-family:var(--font);transition:border-color .15s;min-width:0}
 .add-sub-inp:focus{border-color:var(--ln3)}
 .presets-wrap{margin-bottom:7px}
 .preset-label{font-size:.64rem;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;font-weight:600}
@@ -174,35 +129,25 @@ table{border-collapse:collapse;width:100%}
 .preset-chip{padding:3px 9px;border-radius:999px;border:1px solid var(--ln2);background:rgba(255,255,255,.03);color:var(--t2);font-size:.72rem;cursor:pointer;transition:all .15s;font-family:var(--font)}
 .preset-chip:hover:not(:disabled){border-color:var(--ln3);color:var(--t1);background:rgba(255,255,255,.07)}
 .preset-chip.taken{opacity:.3;cursor:default}
-
-/* ── FORM INPUTS ─────────────────────────────────────── */
-.inp{display:block;width:100%;background:var(--s2);border:1px solid var(--ln2);border-radius:10px;color:var(--t1);padding:10px 13px;font-size:.88rem;outline:none;font-family:var(--font);min-width:0;transition:border-color .15s}
+.inp{display:block;width:100%;background:var(--s2);border:1px solid var(--ln2);border-radius:10px;color:var(--t1);padding:10px 13px;font-size:.88rem;outline:none;font-family:var(--font);transition:border-color .15s}
 .inp:focus{border-color:var(--ln3);box-shadow:0 0 0 3px rgba(255,255,255,.05)}
-.sel{display:block;width:100%;background:var(--s2);border:1px solid var(--ln2);border-radius:10px;color:var(--t1);padding:10px 13px;font-size:.85rem;outline:none;font-family:var(--font);cursor:pointer;min-width:0;transition:border-color .15s}
+.sel{display:block;width:100%;background:var(--s2);border:1px solid var(--ln2);border-radius:10px;color:var(--t1);padding:10px 13px;font-size:.85rem;outline:none;font-family:var(--font);cursor:pointer;transition:border-color .15s}
 .sel:focus{border-color:var(--ln3);box-shadow:0 0 0 3px rgba(255,255,255,.05)}
-input[type=date]{color-scheme:dark;background:var(--s2);border:1px solid var(--ln2);border-radius:10px;color:var(--t1);padding:10px 13px;font-size:.88rem;outline:none;font-family:var(--font);cursor:pointer;width:100%;min-width:0;transition:border-color .15s}
+input[type=date]{color-scheme:dark;background:var(--s2);border:1px solid var(--ln2);border-radius:10px;color:var(--t1);padding:10px 13px;font-size:.88rem;outline:none;font-family:var(--font);cursor:pointer;width:100%;transition:border-color .15s}
 input[type=date]:focus{border-color:var(--ln3);box-shadow:0 0 0 3px rgba(255,255,255,.05)}
 input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.6);cursor:pointer}
 label{display:block;font-size:.73rem;color:var(--t2);margin-bottom:5px;font-weight:500}
-
-/* ── INCOME FORM ROW — stacks vertically on mobile ──── */
-.income-form-row{
-  display:grid;
-  /* 2 columns on desktop, 1 column on mobile */
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  align-items:end;
-  margin-bottom:14px;
-  width:100%;
-}
-/* Income tab: no hardcoded widths, full overflow safety */
-.income-panel{width:100%;min-width:0}
-.income-panel .card{width:100%;min-width:0}
-.income-panel>div{max-width:100%}
-/* Ensure inner wrappers don't escape viewport */
-#tab-income,#tab-income *{max-width:100%;box-sizing:border-box}
-
-/* ── BUTTONS ─────────────────────────────────────────── */
+.fg{display:flex;flex-direction:column;width:100%}
+.add-expense-form{display:flex;flex-direction:column;gap:0;padding:20px}
+.ae-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;width:100%}
+.income-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;width:100%}
+.unalloc-box{border-radius:10px;padding:13px 16px;margin-top:4px;background:rgba(255,255,255,.04);border:1px solid var(--ln2)}
+.unalloc-label{font-size:.7rem;color:var(--t3);margin-bottom:3px;font-weight:500}
+.unalloc-amt{font-size:1.3rem;font-weight:800;letter-spacing:-.03em;color:#fff}
+.unalloc-amt.over{color:rgba(255,80,80,.85)}
+.unalloc-hint{font-size:.7rem;color:var(--t4);margin-top:4px;line-height:1.5}
+.card{background:var(--s1);border:1px solid var(--ln2);border-radius:var(--r-md);padding:20px;box-shadow:0 1px 12px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.04);width:100%}
+.card-title{font-size:.64rem;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:16px;font-weight:600}
 .gbtn{display:block;width:100%;padding:11px 16px;border-radius:10px;background:rgba(255,255,255,.09);color:var(--t1);font-size:.88rem;font-weight:600;cursor:pointer;margin-top:10px;font-family:var(--font);border:1px solid var(--ln2);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);transition:background .15s,border-color .15s,transform .1s var(--ease)}
 .gbtn:hover{background:rgba(255,255,255,.15);border-color:var(--ln3);transform:translateY(-1px)}
 .gbtn:active{transform:translateY(0);background:rgba(255,255,255,.07)}
@@ -212,8 +157,6 @@ label{display:block;font-size:.73rem;color:var(--t2);margin-bottom:5px;font-weig
 .gbtn.danger{background:rgba(255,80,80,.07);color:rgba(255,80,80,.8);border:1px solid rgba(255,80,80,.15)}
 .gbtn.danger:hover{background:rgba(255,80,80,.13);transform:none}
 .helper{font-size:.72rem;color:var(--t4);margin-top:7px;line-height:1.6}
-
-/* ── TABLE ───────────────────────────────────────────── */
 th,td{padding:11px 12px;border-bottom:1px solid var(--ln);text-align:left;font-size:.82rem}
 th{color:var(--t3);font-size:.63rem;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
 tbody tr{transition:background .1s}
@@ -227,20 +170,18 @@ tbody tr:last-child td{border-bottom:none}
 .xbtn:hover{background:rgba(255,80,80,.1);color:rgba(255,100,100,.9);border-color:rgba(255,80,80,.2)}
 .ebtn{background:rgba(255,255,255,.04);color:var(--t2);border:1px solid var(--ln);border-radius:10px;padding:5px 9px;font-size:.75rem;cursor:pointer;transition:all .15s}
 .ebtn:hover{background:rgba(255,255,255,.1);color:var(--t1)}
+@media(max-width:860px){.tx-table-wrap{display:none}.tx-cards{display:flex;flex-direction:column;gap:8px}}
+@media(min-width:861px){.tx-cards{display:none}.tx-table-wrap{display:block;overflow-x:auto}}
+.tx-card{background:var(--s1);border:1px solid var(--ln2);border-radius:var(--r-md);padding:13px 14px;box-shadow:0 1px 8px rgba(0,0,0,.25)}
+.tx-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.tx-card-name{font-size:.88rem;font-weight:700;flex:1;word-break:break-word;min-width:0}
+.tx-card-amt{font-size:.92rem;font-weight:800;color:#fff;white-space:nowrap;letter-spacing:-.025em}
+.tx-card-meta{font-size:.72rem;color:var(--t4);line-height:1.5;margin-top:5px}
+.tx-card-actions{display:flex;gap:8px;margin-top:10px}
 
-/* ── MISC CARDS ──────────────────────────────────────── */
-.unalloc-box{border-radius:10px;padding:13px 16px;margin-top:4px;background:rgba(255,255,255,.04);border:1px solid var(--ln2)}
-.unalloc-label{font-size:.7rem;color:var(--t3);margin-bottom:3px;font-weight:500}
-.unalloc-amt{font-size:1.3rem;font-weight:800;letter-spacing:-.03em;color:#fff}
-.unalloc-amt.over{color:rgba(255,80,80,.85)}
-.unalloc-hint{font-size:.7rem;color:var(--t4);margin-top:4px;line-height:1.5}
-.card{background:var(--s1);border:1px solid var(--ln2);border-radius:var(--r-md);padding:20px;box-shadow:0 1px 12px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.04);min-width:0;width:100%}
-.card-title{font-size:.64rem;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:16px;font-weight:600}
-
-/* ── MODAL ───────────────────────────────────────────── */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;align-items:center;justify-content:center;backdrop-filter:blur(12px)}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;align-items:center;justify-content:center;backdrop-filter:blur(12px);padding:16px}
 .modal-bg.open{display:flex}
-.modal{background:#1c1c1e;border:1px solid rgba(255,255,255,.12);border-radius:var(--r-lg);padding:26px;width:calc(100% - 32px);max-width:420px;display:flex;flex-direction:column;gap:14px;box-shadow:0 40px 100px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06)}
+.modal{background:#1c1c1e;border:1px solid rgba(255,255,255,.12);border-radius:var(--r-lg);padding:26px;width:100%;max-width:420px;display:flex;flex-direction:column;gap:14px;box-shadow:0 40px 100px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06)}
 .modal h3{font-size:.95rem;font-weight:700}
 .modal input,.modal select{display:block;width:100%;background:var(--s2);border:1px solid var(--ln2);border-radius:10px;color:var(--t1);padding:10px 13px;font-size:.88rem;outline:none;font-family:var(--font)}
 .modal input:focus,.modal select:focus{border-color:var(--ln3);box-shadow:0 0 0 3px rgba(255,255,255,.05)}
@@ -251,29 +192,21 @@ tbody tr:last-child td{border-bottom:none}
 .modal-btns .save:hover{background:rgba(255,255,255,.22)}
 .modal-btns .cancel{background:var(--s2);color:var(--t2);border:1px solid var(--ln)}
 .modal-btns .cancel:hover{color:var(--t1)}
-
-/* ── AUTH ────────────────────────────────────────────── */
 #authScreen{background:radial-gradient(ellipse 110% 50% at 50% 0%,#1c1c1e 0%,#0f0f10 70%) fixed}
 .auth-card{background:rgba(28,28,30,.95);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-xl);padding:34px 30px;width:calc(100% - 32px);max-width:360px;display:flex;flex-direction:column;gap:13px;box-shadow:0 32px 80px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter:blur(24px)}
 .auth-logo{font-size:1.05rem;font-weight:800;color:var(--t1);text-align:center;margin-bottom:2px}
 .auth-sub{font-size:.8rem;color:var(--t4);text-align:center;margin-bottom:6px}
-
-/* ── PROFILE PILLS ───────────────────────────────────── */
-.profile-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
-.profile-pill{padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.04);border:none;color:var(--t2);font-size:.8rem;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .18s var(--ease);letter-spacing:-.01em}
+.profile-pills{display:flex;flex-wrap:wrap;gap:10px;padding:12px 0;margin-bottom:8px}
+.profile-pill{padding:8px 16px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--ln2);color:var(--t2);font-size:.8rem;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .18s var(--ease);letter-spacing:-.01em}
 .profile-pill:hover{background:rgba(255,255,255,.09);color:var(--t1)}
-.profile-pill.active{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.22);color:#fff;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
-
-/* ── PROFILE BLOCK — collapsible details ─────────────── */
+.profile-pill.active{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.22);color:#fff;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
 .profile-details{border-radius:var(--r-md);overflow:hidden;width:100%}
 .profile-details[open] .profile-chevron{transform:rotate(90deg)}
 .profile-summary{display:flex;align-items:center;justify-content:space-between;list-style:none;cursor:pointer;padding:0;border-radius:var(--r-md);user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
 .profile-summary::-webkit-details-marker{display:none}
 .profile-summary-inner{flex:1;min-width:0}
-.profile-chevron{transition:transform .2s var(--ease);flex-shrink:0;color:var(--t3);margin-left:12px;margin-top:4px}
+.profile-chevron{transition:transform .2s var(--ease);flex-shrink:0;color:var(--t3);margin-left:12px}
 .profile-body{padding-top:14px}
-
-/* ── SETTINGS ────────────────────────────────────────── */
 .settings-group{background:var(--s1);border:1px solid var(--ln2);border-radius:var(--r-md);overflow:hidden;box-shadow:0 1px 12px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.04)}
 .settings-group-label{font-size:.6rem;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;padding:14px 16px 6px;border-bottom:1px solid var(--ln);font-weight:600}
 .settings-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--ln);transition:background .12s}
@@ -281,114 +214,46 @@ tbody tr:last-child td{border-bottom:none}
 .settings-row:hover{background:rgba(255,255,255,.03)}
 .settings-row-left{display:flex;align-items:center;gap:11px;font-size:.88rem;color:var(--t1);min-width:0}
 .settings-row-left svg{color:var(--t2);flex-shrink:0}
-.settings-row-value{font-size:.82rem;color:var(--t2);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.settings-chevron{color:var(--t3);flex-shrink:0}
+.settings-row-value{font-size:.82rem;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.settings-chevron{color:var(--t3)}
 .settings-row-danger .settings-row-left{color:rgba(255,80,80,.85)}
 .settings-row-danger .settings-row-left svg{color:rgba(255,80,80,.7)}
 .settings-row-danger:hover{background:rgba(255,80,80,.06)}
-
 .eform{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:11px;align-items:end;width:100%}
 .fg label{display:block;font-size:.73rem;color:var(--t2);margin-bottom:5px;font-weight:500}
 #budgetProfileBlock{background:var(--s1);border:1px solid var(--ln2);border-radius:var(--r-md);padding:20px 24px;box-shadow:0 1px 12px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.04);width:100%}
 
-/* ── TX CARDS ────────────────────────────────────────── */
-@media(max-width:860px){.tx-table-wrap{display:none}.tx-cards{display:flex;flex-direction:column;gap:8px}}
-@media(min-width:861px){.tx-cards{display:none}.tx-table-wrap{display:block;overflow-x:auto}}
-.tx-card{background:var(--s1);border:1px solid var(--ln2);border-radius:var(--r-md);padding:13px 14px;box-shadow:0 1px 8px rgba(0,0,0,.25);min-width:0}
-.tx-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.tx-card-name{font-size:.88rem;font-weight:700;flex:1;min-width:0;word-break:break-word}
-.tx-card-amt{font-size:.92rem;font-weight:800;color:#fff;white-space:nowrap;letter-spacing:-.025em}
-.tx-card-meta{font-size:.72rem;color:var(--t4);line-height:1.5;margin-top:5px}
-.tx-card-actions{display:flex;gap:8px;margin-top:10px}
-
-/* ── FLOATING PILL NAV ───────────────────────────────── */
-#mobileNav{
-  display:none;position:fixed;
-  bottom:calc(14px + env(safe-area-inset-bottom));
-  left:50%;transform:translateX(-50%);
-  width:calc(100% - 24px);max-width:430px;
-  background:rgba(20,20,22,.93);
-  backdrop-filter:blur(28px) saturate(200%);
-  -webkit-backdrop-filter:blur(28px) saturate(200%);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:28px;padding:6px 2px;z-index:9998;
-  justify-content:space-around;align-items:center;
-  box-shadow:0 12px 50px rgba(0,0,0,.7),inset 0 0.5px 0 rgba(255,255,255,.08);
-}
-.mnav-btn{
-  display:flex;flex-direction:column;align-items:center;gap:2px;
-  background:transparent;border:none;
-  /* Inactive: muted gray, transparent bg */
-  color:#8E8E93;
-  font-family:var(--font);font-size:.5rem;font-weight:600;
-  letter-spacing:.03em;text-transform:uppercase;
-  cursor:pointer;padding:5px 4px;border-radius:16px;
-  transition:color .18s var(--ease);
-  flex:1;min-width:0;position:relative;
-  -webkit-tap-highlight-color:transparent;
-}
-/* Translucent backing pill — shown only when active */
-.mnav-pip{
-  display:none;position:absolute;inset:0;
-  background:rgba(255,255,255,.12);
-  border-radius:16px;pointer-events:none;
-}
+#mobileNav{display:none;position:fixed;bottom:calc(14px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:430px;background:rgba(20,20,22,.93);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(255,255,255,.1);border-radius:28px;padding:6px 2px;z-index:9998;justify-content:space-around;align-items:center;box-shadow:0 12px 50px rgba(0,0,0,.7),inset 0 0.5px 0 rgba(255,255,255,.08);}
+.mnav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:transparent;border:none;color:#8E8E93;font-family:var(--font);font-size:.5rem;font-weight:600;letter-spacing:.03em;text-transform:uppercase;cursor:pointer;padding:5px 4px;border-radius:16px;transition:color .18s var(--ease);flex:1;min-width:0;position:relative;-webkit-tap-highlight-color:transparent;}
+.mnav-pip{display:none;position:absolute;inset:0;background:rgba(255,255,255,.12);border-radius:16px;pointer-events:none;}
 .mnav-btn svg{opacity:.4;transition:opacity .18s;position:relative;z-index:1;flex-shrink:0}
 .mnav-btn span{position:relative;z-index:1;white-space:nowrap}
 .mnav-btn:active{background:rgba(255,255,255,.05)}
-/* Active: solid white icon + label + pip visible */
 .mnav-btn.active{color:#ffffff}
 .mnav-btn.active svg{opacity:1}
 .mnav-fab-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;min-width:0}
 .mnav-fab{width:38px;height:38px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:13px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.1);transition:transform .15s var(--ease),background .15s}
 .mnav-fab:active{transform:scale(.92)}
 .mnav-fab-label{font-size:.5rem;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:#8E8E93;white-space:nowrap}
-
-/* ── MOBILE OVERRIDES ────────────────────────────────── */
 @media(max-width:860px){
   html,body{overflow-x:hidden;max-width:100vw}
-  .shell{grid-template-columns:1fr;overflow-x:hidden}
+  .shell{grid-template-columns:1fr;overflow-x:hidden;width:100%}
   .side{display:none}
-  .main{
-    /* Safe-area top padding so title clears notch on every tab */
-    padding-top:calc(env(safe-area-inset-top) + 24px);
-    padding-bottom:calc(100px + env(safe-area-inset-bottom));
-    padding-left:16px;padding-right:16px;
-    overflow-x:hidden;overflow-y:visible;
-    width:100%;min-width:0;
-  }
+  .main{padding-top:calc(env(safe-area-inset-top) + 24px);padding-bottom:calc(100px + env(safe-area-inset-bottom));padding-left:16px;padding-right:16px;overflow-x:hidden;overflow-y:visible;width:100%;}
   html,body{overflow-y:auto;height:auto}
-  .shell{min-height:100dvh;overflow-y:visible}
-
-  /* Stat grid: 2-col on mobile */
+  .shell{min-height:100dvh;overflow:visible}
   .stat-row{grid-template-columns:repeat(2,1fr)}
-
-  /* Large title on mobile */
-  .tab-title{font-size:1.75rem;font-weight:800;color:#ffffff!important;-webkit-text-fill-color:#ffffff}
-
-  /* Category grids */
+  .tab-title{font-size:1.75rem!important;font-weight:800!important;color:#ffffff!important;-webkit-text-fill-color:#ffffff!important}
   #catGrid.grid{grid-template-columns:1fr 1fr}
   #catGridFull.grid{grid-template-columns:1fr}
   #catGrid .ccard .scard,#catGrid .ccard .add-sub-row,#catGrid .ccard .presets-wrap{display:none}
-
-  /* Income: single-column, no horizontal bleed */
-  .income-form-row{
-    grid-template-columns:1fr;   /* STACK VERTICALLY */
-    gap:10px;
-  }
-  .income-panel,.income-panel .card,#budgetProfileBlock{
-    width:100%;max-width:100%;padding:16px;
-  }
-  #tab-income,#tab-income>div{
-    max-width:100%;overflow-x:hidden;
-  }
-  .income-panel .gbtn{padding:12px;width:100%}
-
-  /* Add expense form */
+  .ae-row{grid-template-columns:1fr;gap:16px;margin-bottom:16px;}
+  .income-form-row{grid-template-columns:1fr;gap:16px;}
+  #tab-income .card,#budgetProfileBlock{padding:16px;width:100%}
   .eform{grid-template-columns:1fr}
+  .profile-pills{gap:10px;padding:12px 0}
 }
-@media(max-width:860px){#mobileNav{display:flex}}
-</style>
+@media(max-width:860px){#mobileNav{display:flex}}</style>
 </head>
 <body>
 <!-- Edit Transaction Modal -->
@@ -441,12 +306,13 @@ tbody tr:last-child td{border-bottom:none}
     <div class="side-section-label">Period</div>
     <div style="padding:0 4px;"><div class="month-tabs" id="monthTabs"></div><button class="gbtn ghost sm" style="margin-top:8px;width:100%;" onclick="addMonth()">+ New Month</button></div>
     <div class="side-divider" style="margin-top:auto;"></div>
+      <button class="gbtn ghost sm" id="desktopAddMonthBtn" style="margin-top:8px;width:100%" onclick="addMonth()">+ New Month</button>
     <div class="side-section-label">General</div>
     <button class="side-item" id="nav-settings" onclick="switchTab('settings')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</button>
     <button class="side-item danger-item" onclick="doLogout()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button>
   </aside>
   <main class="main">
-    <div id="tab-dashboard" class="tab-panel">
+<div id="tab-dashboard" class="tab-panel">
       <div class="tab-header">
         <div>
           <h2 class="tab-title" id="dashWelcomeTitle">Welcome Back</h2>
@@ -536,7 +402,7 @@ tbody tr:last-child td{border-bottom:none}
 
       
     </div>
-    <div id="tab-transactions" class="tab-panel" style="display:none">
+<div id="tab-transactions" class="tab-panel" style="display:none">
       <div class="tab-header">
         <div>
           <h2 class="tab-title">Transactions</h2>
@@ -548,50 +414,49 @@ tbody tr:last-child td{border-bottom:none}
         <div class="tx-table-wrap"><table><thead><tr><th>Name</th><th>Category</th><th>Subcategory</th><th>Date</th><th>Amount</th><th></th></tr></thead><tbody id="txBody"></tbody></table></div><div class="tx-cards" id="txCards"></div>
       </div>
     </div>
-    <div id="tab-add-expense" class="tab-panel" style="display:none">
-      <div class="tab-header">
-        <div>
-          <h2 class="tab-title">Add Expense</h2>
-          <p class="tab-sub">Log a new transaction</p>
-        </div>
+<div id="tab-add-expense" class="tab-panel" style="display:none;">
+  <div class="tab-header">
+    <div><h2 class="tab-title">Add Expense</h2><p class="tab-sub">Log a new transaction</p></div>
+  </div>
+  <div class="card add-expense-form">
+    <div class="fg" style="margin-bottom:16px;">
+      <label>Description</label>
+      <input class="inp" id="aeNameInp" type="text" placeholder="e.g. Rent, Netflix, Groceries..." autocomplete="off"/>
+    </div>
+    <div class="ae-row">
+      <div class="fg">
+        <label>Category</label>
+        <select class="sel" id="aeCatSel" onchange="aeUpdateSubs()"></select>
       </div>
-      <div class="card" style="max-width:900px;padding:0;overflow:hidden;">
-        <div style="overflow-x:auto;">
-          <table style="width:100%;border-collapse:collapse;" id="addExpenseTable">
-            <thead><tr style="border-bottom:1px solid var(--border);">
-              <th style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:12px 14px;text-align:left;">Name</th>
-              <th style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:12px 14px;text-align:left;">Category</th>
-              <th style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:12px 14px;text-align:left;">Subcategory</th>
-              <th style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:12px 14px;text-align:left;">Date</th>
-              <th style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:12px 14px;text-align:right;">Amount</th>
-              <th style="padding:12px 14px;"></th>
-            </tr></thead>
-            <tbody id="addExpenseRows"></tbody>
-          </table>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--border);">
-          <button class="gbtn ghost" style="padding:7px 16px;font-size:.82rem;" onclick="addExpenseRow()">+ Add Row</button>
-          <button class="gbtn" style="padding:7px 20px;font-size:.82rem;" onclick="saveAllExpenses()">Save All</button>
-        </div>
-      </div>
-      <div class="card" style="max-width:900px;margin-top:0;">
-        <div style="font-size:.85rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Recent Transactions</div>
-        <div style="overflow-x:auto;">
-          <table style="width:100%;border-collapse:collapse;">
-            <thead><tr>
-              <th style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left;">Name</th>
-              <th style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left;">Category</th>
-              <th style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left;">Subcategory</th>
-              <th style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left;">Date</th>
-              <th style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:8px 12px;border-bottom:1px solid var(--border);text-align:right;">Amount</th>
-              <th style="padding:8px 12px;border-bottom:1px solid var(--border);"></th>
-            </tr></thead>
-            <tbody id="recentTxBody"><tr><td colspan="6" class="empty">No transactions yet.</td></tr></tbody>
-          </table>
-        </div>
+      <div class="fg">
+        <label>Subcategory</label>
+        <select class="sel" id="aeSubSel"></select>
       </div>
     </div>
-    <div id="tab-categories" class="tab-panel" style="display:none">
+    <div class="ae-row">
+      <div class="fg">
+        <label>Date</label>
+        <input class="inp" id="aeDateInp" type="date"/>
+      </div>
+      <div class="fg">
+        <label>Amount ($)</label>
+        <input class="inp" id="aeAmtInp" type="number" min="0" step="0.01" placeholder="0.00" inputmode="decimal"/>
+      </div>
+    </div>
+    <button class="gbtn" style="margin-top:6px;" onclick="aeSubmit()">Save Expense</button>
+    <p id="aeMsg" style="font-size:.75rem;color:rgba(255,255,255,.4);text-align:center;min-height:18px;margin-top:6px;"></p>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div class="card-title" style="padding:16px 16px 0;">Recent Transactions</div>
+    <div class="tx-table-wrap" style="padding:0;">
+      <table><thead><tr>
+        <th>Name</th><th>Category</th><th>Subcategory</th><th>Date</th><th>Amount</th><th></th>
+      </tr></thead><tbody id="recentTxBody"><tr><td colspan="6" class="empty">No transactions yet.</td></tr></tbody></table>
+    </div>
+    <div class="tx-cards" id="recentTxCards"></div>
+  </div>
+</div>
+<div id="tab-categories" class="tab-panel" style="display:none">
       <div class="tab-header">
         <div>
           <h2 class="tab-title">Categories</h2>
@@ -600,7 +465,7 @@ tbody tr:last-child td{border-bottom:none}
       </div>
       <div class="grid" id="catGridFull"></div>
     </div>
-    <div id="tab-income" class="tab-panel income-panel" style="display:none">
+<div id="tab-income" class="tab-panel" style="display:none">
       <div class="tab-header">
         <div>
           <h2 class="tab-title">Income & Budget</h2>
@@ -608,17 +473,17 @@ tbody tr:last-child td{border-bottom:none}
         </div>
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:16px;max-width:100%;">
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:640px;">
 
         <!-- INCOME CARD -->
         <div class="card">
           <div class="card-title"> Your Paycheck</div>
-          <div class="income-form-row">
-            <div style="flex:1;min-width:0;">
+          <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px;">
+            <div style="flex:1;min-width:160px;">
               <label style="display:block;font-size:.76rem;color:var(--muted);margin-bottom:5px;">Amount per check</label>
               <input class="inp" id="incIn" type="number" min="0" step="0.01" placeholder="e.g. 2000" oninput="updateIncomePreview();saveIncomeToState();"/>
             </div>
-            <div style="min-width:0;">
+            <div style="min-width:160px;">
               <label style="display:block;font-size:.76rem;color:var(--muted);margin-bottom:5px;">Pay frequency</label>
               <select class="sel" id="payFreq" onchange="updateIncomePreview();saveIncomeToState();">
                 <option value="monthly">Monthly (1x/month)</option>
@@ -652,7 +517,7 @@ tbody tr:last-child td{border-bottom:none}
         </div>
       </div>
     </div>
-    <div id="tab-settings" class="tab-panel" style="display:none;">
+<div id="tab-settings" class="tab-panel" style="display:none;">
   <div class="tab-header"><div><h2 class="tab-title">Settings</h2><p class="tab-sub">Account &amp; preferences</p></div></div>
   <div class="settings-group">
     <div class="settings-group-label">Account</div>
@@ -690,32 +555,11 @@ tbody tr:last-child td{border-bottom:none}
   </main>
 </div>
 <nav id="mobileNav">
-  <button class="mnav-btn active" id="mnav-dashboard" onclick="switchTab('dashboard')">
-    <div class="mnav-pip" style="display:block;"></div>
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-    <span>Home</span>
-  </button>
-  <button class="mnav-btn" id="mnav-transactions" onclick="switchTab('transactions')">
-    <div class="mnav-pip" style=""></div>
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
-    <span>Spent</span>
-  </button>
-  <div class="mnav-fab-wrap">
-    <button class="mnav-fab" onclick="switchTab('add-expense')" id="mnav-add-expense" aria-label="Add">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2.3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </button>
-    <span class="mnav-fab-label">Add</span>
-  </div>
-  <button class="mnav-btn" id="mnav-categories" onclick="switchTab('categories')">
-    <div class="mnav-pip" style=""></div>
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-    <span>Budget</span>
-  </button>
-  <button class="mnav-btn" id="mnav-income" onclick="switchTab('income')">
-    <div class="mnav-pip" style=""></div>
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-    <span>Income</span>
-  </button>
+  <button class="mnav-btn active" id="mnav-dashboard" onclick="switchTab('dashboard')"><div class="mnav-pip" style="display:block;"></div><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Home</span></button>
+  <button class="mnav-btn" id="mnav-transactions" onclick="switchTab('transactions')"><div class="mnav-pip" style=""></div><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg><span>Spent</span></button>
+  <div class="mnav-fab-wrap"><button class="mnav-fab" onclick="navPlusAction()" id="mnav-add-expense" aria-label="Add"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2.3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><span class="mnav-fab-label">Add</span></div>
+  <button class="mnav-btn" id="mnav-categories" onclick="switchTab('categories')"><div class="mnav-pip" style=""></div><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span>Budget</span></button>
+  <button class="mnav-btn" id="mnav-income" onclick="switchTab('income')"><div class="mnav-pip" style=""></div><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><span>Income</span></button>
 </nav>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -827,6 +671,15 @@ function totalAssigned(bd){
 }
 
 // ── MONTH MANAGEMENT ───────────────────────────────────────────────────────
+function navPlusAction(){
+  var choice = window.prompt("Add a month or an expense? Type month or expense.", "month");
+  if(!choice) return;
+  choice = String(choice).trim().toLowerCase();
+  if(choice === "month"){ addMonth(); return; }
+  if(choice === "expense"){ switchTab("add-expense"); return; }
+  window.alert("Please type month or expense.");
+}
+
 function addMonth(){
   var now = new Date();
   var suggestions = [];
@@ -1463,6 +1316,15 @@ function render(){
     '</tr>';
   }
   $id("txBody").innerHTML=rows;
+  // also populate mobile card view
+  var _cards="";
+  for(var i=0;i<d.txs.length;i++){
+    var tx=d.txs[i];
+    _cards+='<div class="tx-card"><div class="tx-card-top"><span class="tx-card-name">'+tx.name+'</span><span class="tx-card-amt">'+money(tx.amt)+'</span></div>'+
+      '<div class="tx-card-meta">'+tx.cat+(tx.sub?' &middot; '+tx.sub:'')+' &middot; '+tx.date+'</div>'+
+      '<div class="tx-card-actions"><button class="ebtn" onclick="openEdit(''+tx.id+'')">Edit</button><button class="xbtn" onclick="deleteTx(''+tx.id+'')">Del</button></div></div>';
+  }
+  var _tc=document.getElementById('txCards'); if(_tc) _tc.innerHTML=_cards;
   renderRecentTx();
 }
 
@@ -1484,6 +1346,17 @@ function renderRecentTx(){
     '</tr>';
   }
   el.innerHTML=rows;
+  // mobile card view for recent transactions
+  var _rc=''; var _rtc=document.getElementById('recentTxCards');
+  if(_rtc){
+    for(var _i=0;_i<sorted.length;_i++){
+      var _t=sorted[_i];
+      _rc+='<div class="tx-card"><div class="tx-card-top"><span class="tx-card-name">'+_t.name+'</span><span class="tx-card-amt">'+money(_t.amt)+'</span></div>'+
+        '<div class="tx-card-meta">'+_t.cat+(_t.sub?' &middot; '+_t.sub:'')+' &middot; '+_t.date+'</div>'+
+        '<div class="tx-card-actions"><button class="ebtn" onclick="openEdit(''+_t.id+'')">Edit</button><button class="xbtn" onclick="deleteTx(''+_t.id+'')">Del</button></div></div>';
+    }
+    _rtc.innerHTML=_rc;
+  }
 }
 
 // ── TAB NAVIGATION ──────────────────────────────────────────────────────────
@@ -1511,6 +1384,8 @@ function switchTab(tab){
   if(_mb){ _mb.classList.add('active'); var _p=_mb.querySelector('.mnav-pip'); if(_p) _p.style.display='block'; }
   if(tab==='dashboard'||tab==='categories') render();
   if(tab==='settings') showSettingsEmail();
+  if(tab==='add-expense'){ aeInit(); renderRecentTx(); }
+  if(tab==='transactions') render();
   if(tab==='income'){ loadMonthIntoUI(); renderWeightInputs(); updateIncomePreview(); }
   if(tab==='transactions'){ render(); }
   if(tab==='add-expense'){
@@ -1946,6 +1821,54 @@ saveIncomeToState = function() {
 setTimeout(function() { renderDashboardProfiles(); renderIncomeProfiles(); }, 700);
 
 
+// ── ADD EXPENSE: single-form native mobile UI ──────────────────────────
+function aeInit(){
+  var d=activeData();
+  var catSel=document.getElementById('aeCatSel');
+  if(!catSel) return;
+  var prev=parseInt(catSel.value,10)||0;
+  var opts='';
+  for(var i=0;i<d.bd.length;i++) opts+='<option value="'+i+'">'+d.bd[i].name+'</option>';
+  catSel.innerHTML=opts;
+  catSel.value=Math.min(prev,d.bd.length-1);
+  aeUpdateSubs();
+  var dateInp=document.getElementById('aeDateInp');
+  if(dateInp && !dateInp.value) dateInp.value=new Date().toISOString().split('T')[0];
+}
+function aeUpdateSubs(){
+  var d=activeData();
+  var catSel=document.getElementById('aeCatSel');
+  var subSel=document.getElementById('aeSubSel');
+  if(!catSel||!subSel) return;
+  var ci=parseInt(catSel.value,10)||0;
+  var opts='';
+  if(d.bd[ci]){
+    for(var s=0;s<d.bd[ci].subs.length;s++) opts+='<option value="'+s+'">'+d.bd[ci].subs[s].name+'</option>';
+  }
+  subSel.innerHTML=opts||'<option value="0">General</option>';
+}
+function aeSubmit(){
+  var d=activeData();
+  var name=document.getElementById('aeNameInp').value.trim();
+  var ci=parseInt(document.getElementById('aeCatSel').value,10)||0;
+  var si=parseInt(document.getElementById('aeSubSel').value,10)||0;
+  var date=document.getElementById('aeDateInp').value;
+  var amt=parseFloat(document.getElementById('aeAmtInp').value);
+  var msg=document.getElementById('aeMsg');
+  if(!name){ if(msg) msg.textContent='Please enter a description.'; return; }
+  if(!date){ if(msg) msg.textContent='Please pick a date.'; return; }
+  if(isNaN(amt)||amt<=0){ if(msg) msg.textContent='Please enter a valid amount.'; return; }
+  d.bd[ci].subs[si].spent=Math.round((d.bd[ci].subs[si].spent+amt)*100)/100;
+  d.txs.push({id:Date.now()+''+Math.random(),name:name,cat:d.bd[ci].name,sub:d.bd[ci].subs[si].name,ci:ci,si:si,amt:Math.round(amt*100)/100,date:date});
+  saveAndRender();
+  renderRecentTx();
+  // Reset form
+  document.getElementById('aeNameInp').value='';
+  document.getElementById('aeAmtInp').value='';
+  document.getElementById('aeDateInp').value=new Date().toISOString().split('T')[0];
+  if(msg){ msg.textContent='Expense saved!'; setTimeout(function(){ msg.textContent=''; },2000); }
+}
+
 function showSettingsEmail(){
   var el=document.getElementById('settingsEmail');
   if(el && currentUser && currentUser.email) el.textContent=currentUser.email;
@@ -1958,5 +1881,8 @@ function exportData(){
   var a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download='budget-export.csv'; a.click();
 }
 </script>
+<div id="mobileMonthBar" style="display:none;position:fixed;left:16px;right:16px;bottom:calc(92px + env(safe-area-inset-bottom));z-index:9997;">
+  <button class="gbtn ghost sm" onclick="addMonth()" style="margin-top:0;width:100%;background:rgba(20,20,22,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.10);box-shadow:0 10px 28px rgba(0,0,0,.35)">+ New Month</button>
+</div>
 </body>
 </html>
