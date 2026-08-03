@@ -1,0 +1,13 @@
+{
+  "model": "deepseek-ai/deepseek-v4-pro",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello! Explain black holes in one sentence."
+    }
+  ],
+  "temperature": 1,
+  "top_p": 0.95,
+  "max_tokens": 16384,
+  "stream": false
+}
